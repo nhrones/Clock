@@ -1,6 +1,6 @@
 # Clock
 
-The Dot-Clock Typescript code in the `src` folder is heavily commented.    
+The Dot-Clock Typescript code in the 'src' folder is heavily commented.    
 I built this as a learning exercise for a grandson who was taking computer science at UGA.    
 The interesting bits was reducing V8 garbage collection by building a resource-pool of dots.    
 `See: /src/dotPool.ts`
