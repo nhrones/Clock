@@ -68,7 +68,6 @@ export class ClockNumber {
         }
     }
 
-
     /**
      * Draw the visual pixels(dots) for a given number,
      * based on a lookup in an array of pixel masks.
@@ -83,7 +82,6 @@ export class ClockNumber {
      * an animated dot.
      */
     drawPixels(newPixelMask: number[][]) {
-        //dot: { x: number, y: number }
         for (y = 0; y < MatrixHeight; ++y) {
             for (x = 0; x < MatrixWidth; ++x) {
                 dot = this.dotLocations[y][x]
