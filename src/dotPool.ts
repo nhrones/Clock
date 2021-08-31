@@ -9,9 +9,9 @@ export const Dot = {
 
     /** A gravitational pull in the positive Y direction(down to floor)     
      * Have some fun! ... try a negative value
-     * default = 100
+     * default = 50
     */
-    GravityY: 100,
+    GravityY: 50,
 
     /**
      * The coefficient of restitution (COR) is the ratio     
@@ -21,9 +21,9 @@ export const Dot = {
      * This represents the amount of 'bounce' a dot will exibit.    
      * 1.0 = full rebound, and 0.5 will rebound only    
      * half as high as the distance fallen.    
-     * default = 0.8
+     * default = 0.5
      */
-    Restitution: 0.8,
+    Restitution: 0.5,
 
     /** 
      * The radius of dots   
@@ -47,9 +47,9 @@ export const Dot = {
 
     /** 
      * The Maximum Velocity that a dot may take when it recieves a random velocity.     
-     * default = 200
+     * default = 500
      * */
-    MaxVelocity: 200.0,
+    MaxVelocity: 500.0,
 
     /** 
      * Our default dot color (blue)     
