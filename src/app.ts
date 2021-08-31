@@ -1,6 +1,6 @@
 
-import { ClockFace } from './public/clockFace.js'
-import { DomEvents } from './public/dom.js'
+import { ClockFace } from './clockFace.js'
+import { DomEvents } from './dom.js'
 
 // wait for it ...
 window.addEventListener('DOMContentLoaded', (e) => {

@@ -1,12 +1,12 @@
 import { canvasCTX, width, height } from './clockFace.js';
 export const Dot = {
     GravityX: 0,
-    GravityY: 100,
-    Restitution: 0.8,
+    GravityY: 50,
+    Restitution: 0.5,
     Radius: 14.0,
     HalfRadius: 7.0,
     Radius_Sqrd: 14 * 14,
-    MaxVelocity: 200.0,
+    MaxVelocity: 500.0,
     Color: '#44f',
     render: (x, y, color) => {
         canvasCTX.fillStyle = color || Dot.Color;
