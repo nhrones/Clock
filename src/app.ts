@@ -1,6 +1,6 @@
 
-import { ClockFace } from './clockFace.js'
-import { DomEvents } from './dom.js'
+import { buildClockFace } from './clockFace.js'
+import * as DomEvents  from './dom.js'
 
 // wait for it ...
 window.addEventListener('DOMContentLoaded', (e) => {
@@ -8,5 +8,5 @@ window.addEventListener('DOMContentLoaded', (e) => {
     // and setup all of our DOM event handlers.
     DomEvents.init()
     // now, let's build -> render -> and animate this 'clock'
-    let _ = new ClockFace()
+    buildClockFace()
 })
