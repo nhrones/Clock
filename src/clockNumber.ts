@@ -77,7 +77,6 @@ export function createNumber(x: number, y: number): ClockNumber {
         x: left, 
         y: top, 
         drawPixels: (newPixelMask: number[][]) => {
-            console.info(newPixelMask)
             for (y = 0; y < MatrixHeight; ++y) {
                 for (x = 0; x < MatrixWidth; ++x) {
                     dot = dotLocations[y][x]

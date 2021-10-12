@@ -25,8 +25,7 @@ export function createNumber(x, y) {
     return {
         x: left,
         y: top,
-        drawPixels: (newPixelMask) => {
-            console.info(newPixelMask);
+        drawPixels: (newPixelMask) => {           
             for (y = 0; y < MatrixHeight; ++y) {
                 for (x = 0; x < MatrixWidth; ++x) {
                     dot = dotLocations[y][x];
