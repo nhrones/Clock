@@ -164,24 +164,9 @@ let tailPointer = 0
 /** The last 'tick' time (used for time-delta calculation). */
 let lastTime = Date.now()
 
-/** the fill color to render dots(circles) with */
-//static Color = Color
-
-/** Constructs a new DotPool object */
-//constructor() {
-//lastTime = Date.now()
-//posX = []
-//posY = []
-//lastX = []
-//lastY = []
-//velocityX = []
-//velocityY = []
-//initializeDotPool()
-//}
-
 /**
  * Returns a random velocity value
- * clamped by the value of Ball.MaxVelocity
+ * clamped by the value of MaxVelocity
  */
 const randomVelocity = () => {
     return (Math.random() - 0.4) * MaxVelocity

@@ -18,19 +18,8 @@ export interface ClockNumber {
 
 export const MatrixWidth = 4;
 export const MatrixHeight = 7;
+
 let dot = { x: 0, y: 0 }
-//let y = 0
-//let x = 0
-
-/** A 2 dimensional array of point locations(dots) as a 4 x 7 matrix */
-//let dotLocations: { x: number, y: number }[][]
-
-/**
- * A 2 dimensional array of points
- * as a 4 x 7 matrix, that contains a mask
- * of values 0 or 1 to indicate active pixels
- */
-//let currentPixelMask: number[][]
 
 /**
  * Create a new ClockNumber object and
@@ -42,17 +31,17 @@ export function createNumber(x: number, y: number): ClockNumber {
     // set location for this display
     let left = x
     let top = y
-    
+
     /**
      * A 2 dimensional array of points
      * as a 4 x 7 matrix, that contains a mask
      * of values 0 or 1 to indicate active pixels
      */
     let currentPixelMask: number[][]
-    
+
     /** A 2 dimensional array of point locations(dots) as a 4 x 7 matrix */
     let dotLocations: { x: number, y: number }[][]
-    
+
     // initialize our location arrays
     dotLocations = new Array(MatrixHeight)
     for (let i = 0; i < MatrixHeight; ++i) {
@@ -84,30 +73,33 @@ export function createNumber(x: number, y: number): ClockNumber {
      * That is, it will be 'activated' in the DotPool, becoming
      * an animated dot.
      */
-    function drawPixels(newPixelMask: number[][]) {
-        console.info(newPixelMask)
-        for (y = 0; y < MatrixHeight; ++y) {
-            for (x = 0; x < MatrixWidth; ++x) {
-                dot = dotLocations[y][x]
-                if (currentPixelMask != null) {
-                    // if this dot is 'on', and it is not required for the new number
-                    if ((currentPixelMask[y][x] !== 0) && (newPixelMask[y][x] === 0)) {
-                        // activate it as a 'free' animated dot
-                        activateDot(dot.x, dot.y)
+    return {
+        x: left, 
+        y: top, 
+        drawPixels: (newPixelMask: number[][]) => {
+            console.info(newPixelMask)
+            for (y = 0; y < MatrixHeight; ++y) {
+                for (x = 0; x < MatrixWidth; ++x) {
+                    dot = dotLocations[y][x]
+                    if (currentPixelMask != null) {
+                        // if this dot is 'on', and it is not required for the new number
+                        if ((currentPixelMask[y][x] !== 0) && (newPixelMask[y][x] === 0)) {
+                            // activate it as a 'free' animated dot
+                            activateDot(dot.x, dot.y)
+                        }
+                    }
+                    // if this dot is an active member of this number mask
+                    if (newPixelMask[y][x] === 1) {
+                        // render it to the canvas
+                        renderDot(dot.x, dot.y)
                     }
                 }
-                // if this dot is an active member of this number mask
-                if (newPixelMask[y][x] === 1) {
-                    // render it to the canvas
-                    renderDot(dot.x, dot.y)
-                }
             }
+            // Set the current pixel mask to this new mask. Used to
+            // evaluate pixels to be 'freed' during next update.
+            currentPixelMask = newPixelMask
         }
-        // Set the current pixel mask to this new mask. Used to
-        // evaluate pixels to be 'freed' during next update.
-        currentPixelMask = newPixelMask
     }
-    return { x: left, y: top, drawPixels: drawPixels }
 }
 
 /**

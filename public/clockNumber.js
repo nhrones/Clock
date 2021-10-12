@@ -22,24 +22,27 @@ export function createNumber(x, y) {
             };
         }
     }
-    function drawPixels(newPixelMask) {
-        console.info(newPixelMask);
-        for (y = 0; y < MatrixHeight; ++y) {
-            for (x = 0; x < MatrixWidth; ++x) {
-                dot = dotLocations[y][x];
-                if (currentPixelMask != null) {
-                    if ((currentPixelMask[y][x] !== 0) && (newPixelMask[y][x] === 0)) {
-                        activateDot(dot.x, dot.y);
+    return {
+        x: left,
+        y: top,
+        drawPixels: (newPixelMask) => {
+            console.info(newPixelMask);
+            for (y = 0; y < MatrixHeight; ++y) {
+                for (x = 0; x < MatrixWidth; ++x) {
+                    dot = dotLocations[y][x];
+                    if (currentPixelMask != null) {
+                        if ((currentPixelMask[y][x] !== 0) && (newPixelMask[y][x] === 0)) {
+                            activateDot(dot.x, dot.y);
+                        }
+                    }
+                    if (newPixelMask[y][x] === 1) {
+                        renderDot(dot.x, dot.y);
                     }
                 }
-                if (newPixelMask[y][x] === 1) {
-                    renderDot(dot.x, dot.y);
-                }
             }
+            currentPixelMask = newPixelMask;
         }
-        currentPixelMask = newPixelMask;
-    }
-    return { x: left, y: top, drawPixels: drawPixels };
+    };
 }
 export const PIXELS = [
     [
