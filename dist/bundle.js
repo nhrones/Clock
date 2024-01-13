@@ -4,7 +4,7 @@
 var GravityX = 0;
 var GravityY = 1600;
 var setGravityY = (value) => {
-  GravityY = value * 20;
+  GravityY = value * 50;
 };
 var Restitution = 0.8;
 var setRestitution = (value) => {
@@ -15,7 +15,7 @@ var HalfRadius = 7;
 var Radius_Sqrd = 14 * 14;
 var MaxVelocity = 2400;
 var setMaxVelocity = (value) => {
-  MaxVelocity = value * 30;
+  MaxVelocity = value * 50;
 };
 var Color = "#44f";
 var renderDot = (x, y, color) => {
@@ -380,7 +380,7 @@ var i;
 var animatedDots;
 var currentX = 0;
 var currentY = 0;
-var _trails = "0.07";
+var _trails = "0.11";
 var setTrails = (value) => {
   _trails = toLog(value).toFixed(2);
 };

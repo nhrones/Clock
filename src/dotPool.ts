@@ -13,7 +13,7 @@ export const GravityX = 0
 */
 let GravityY = 1600 
 export const setGravityY = (value: number) => { 
-   GravityY = value * 20; 
+   GravityY = value * 50; 
 }
 
 /**
@@ -57,7 +57,7 @@ const Radius_Sqrd = 14 * 14
  * */
 let MaxVelocity = 2400 // 80% * 30
 export const setMaxVelocity = (value: number) => { 
-   MaxVelocity = value * 30 
+   MaxVelocity = value * 50 
 }
 
 /** 

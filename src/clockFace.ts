@@ -65,7 +65,7 @@ let currentX = 0
 let currentY = 0
 
 /** trails represents a partical trails value */
-let _trails = '0.07' // 0.5 = 0%  0.11 = 50%  0.025 = 100%   
+let _trails = '0.11' // 0.5 = 0%  0.11 = 50%  0.025 = 100%   
 export const setTrails = (value: number) => {
    _trails = toLog(value).toFixed(2);
 }
