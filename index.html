@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <title>Deno-Deploy Clock</title>
+   <meta charset="utf-8">
+   <meta name="description" content="Author: N.D. Hrones, Category: Clock">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- Suppress browser request for favicon.ico -->
+   <link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;,">
+   <link rel="stylesheet" href="./dist/styles.css" />
+   <link rel="stylesheet" href="./dist/slider.css" />
+   <script type="module" src="./dist/bundle.js"></script>
+</head>
+
+<body>
+   <canvas id="canvas-content"></canvas>
+   <div>
+      <a class=link href="https://github.com/nhrones/Clock">Code on Github</a>
+      <label for="gravity" id="gravity-value">Gravity: 50%</label>
+   </div>
+   <div>
+      <input type="range" name="gravity" id="gravity" min="1" max="100" value="50" class="slider">
+   </div>
+   <div>
+      <label for="bounce" id="bounce-value">Gravity: 50%</label>
+   </div>
+   <div>
+      <input type="range" name="bounce" id="bounce" min="1" max="100" value="50" class="slider">
+   </div>
+   <div>
+      <label for="velocity" id="velocity-value">Velocity: 50%</label>
+   </div>
+   <div>
+      <input type="range" name="velocity" id="velocity" min="1" max="100" value="50" class="slider">
+   </div>
+   <div>
+      <label for="trail" id="trails-value">Partical-Trails: 50%</label>
+   </div>
+   <div>
+      <input type="range" name="trail" id="trails-slider" min="1" max="100" value="50" class="slider">
+   </div>
+ 
+</body>
