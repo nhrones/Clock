@@ -11,7 +11,9 @@ Below the clock are four slider controls. Try moving each slider to change the a
 
 ## Have fun!    
  
-Click the image below to check the time!
-[![clock](./clock.png)](https://nhrones.github.io/Clock/)
+Click the image below to check the time!    
+
+[![clock](./clock.png)](https://nhrones.github.io/Clock/)    
+
 ## Run Online
 https://nhrones.github.io/Clock/
