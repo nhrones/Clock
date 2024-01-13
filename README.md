@@ -2,7 +2,7 @@
 
 ## Click the image to check the time!    
 
-[![clock](./clock.png)](https://nhrones.github.io/Clock/)    
+[![clock](./media/clock.png)](https://nhrones.github.io/Clock/)    
 
 ## About this app
 This small app was built as a learning exercise for a grandson who was studing CS at UGA. That's why all code in the _/src/_ folder is **_heavily commented_**! 
