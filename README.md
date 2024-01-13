@@ -15,6 +15,8 @@ The interesting bits of this exercise was the use of a resource-pool to improve 
 Below the clock are four slider controls. Try moving each slider to change the animation.    
 The **_partical-trails_** slider is most interesting. It controls the RGBA alpha channel to gradually fade out trails. The higher the slider value, the less trail fade.   
 
+## Note:
+This app was built using my <a href="https://github.com/nhrones/Hot">**_Hot_**</a> dev server.  The contents in the **/src/** folder have been bundled into the **_./bundle.js_** file.  
 
 ## Run Online
 https://nhrones.github.io/Clock/

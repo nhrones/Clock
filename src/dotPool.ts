@@ -11,7 +11,7 @@ export const GravityX = 0
  * Have some fun! ... try a negative value
  * default = 1600
 */
-let GravityY = 1600 
+let GravityY = 2500 
 export const setGravityY = (value: number) => { 
    GravityY = value * 50; 
 }
@@ -26,7 +26,7 @@ export const setGravityY = (value: number) => {
  * half as high as the distance fallen.    
  * default = 0.8
  */
-let Restitution = 0.8
+let Restitution = 0.5
 export const setRestitution = (value: number) => { 
    Restitution = value * 0.01;
 }
@@ -55,7 +55,7 @@ const Radius_Sqrd = 14 * 14
  * The Maximum Velocity that a dot may take when it recieves a random velocity.     
  * default = 2400
  * */
-let MaxVelocity = 2400 // 80% * 30
+let MaxVelocity = 2500
 export const setMaxVelocity = (value: number) => { 
    MaxVelocity = value * 50 
 }
