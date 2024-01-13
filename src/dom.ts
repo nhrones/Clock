@@ -18,7 +18,7 @@ export const init = () => {
    setRestitution(parseInt(bounceSlider.value));
    setMaxVelocity(parseInt(velocitySlider.value));
    setTrails(parseInt(trailsSlider.value));
-   
+
    // gravity
    gravitySlider.oninput = () => {
       gravityValue.innerHTML = `    Gravity: ${gravitySlider.value}%`;
@@ -27,7 +27,7 @@ export const init = () => {
 
    // bounce
    bounceSlider.oninput = () => {
-      bounceValue.innerHTML = `    Bounce:   ${bounceSlider.value}%`;
+      bounceValue.innerHTML = `    COR Restitution:   ${bounceSlider.value}%`;
       setRestitution(parseInt(bounceSlider.value));
    };
 
@@ -39,7 +39,7 @@ export const init = () => {
 
    // partical trails -- 
    trailsSlider.oninput = () => {
-      trailsValue.innerHTML = `    Con-Trail:  ${trailsSlider.value}%`;
+      trailsValue.innerHTML = `    Partical-Trails:  ${trailsSlider.value}%`;
       setTrails(parseInt(trailsSlider.value));
    };
 };

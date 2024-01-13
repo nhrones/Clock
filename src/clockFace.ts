@@ -233,7 +233,7 @@ const createNumbers = () => {
 
    // Next, initialize the horizontal position (x)
    // We will manipulate this several times as we build up the display
-   currentX = (width - hSize) * 0.45
+   currentX = (width - hSize) * 0.2 //0.45
 
    // go build the 'hours' display 
    buildNumber(hours)

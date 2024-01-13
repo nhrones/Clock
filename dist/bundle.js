@@ -345,7 +345,7 @@ var init = () => {
     setGravityY(parseInt(gravitySlider.value));
   };
   bounceSlider.oninput = () => {
-    bounceValue.innerHTML = `    Bounce:   ${bounceSlider.value}%`;
+    bounceValue.innerHTML = `    COR Restitution:   ${bounceSlider.value}%`;
     setRestitution(parseInt(bounceSlider.value));
   };
   velocitySlider.oninput = () => {
@@ -353,7 +353,7 @@ var init = () => {
     setMaxVelocity(parseInt(velocitySlider.value));
   };
   trailsSlider.oninput = () => {
-    trailsValue.innerHTML = `    Con-Trail:  ${trailsSlider.value}%`;
+    trailsValue.innerHTML = `    Partical-Trails:  ${trailsSlider.value}%`;
     setTrails(parseInt(trailsSlider.value));
   };
 };
@@ -434,7 +434,7 @@ var createNumbers = () => {
   hSize = (DOT_WIDTH * MatrixWidth + NUMBER_SPACING) * 6 + (DOT_WIDTH + NUMBER_SPACING) * 2 - NUMBER_SPACING;
   vSize = DOT_HEIGHT * MatrixHeight;
   currentY = (height - vSize) * 0.33;
-  currentX = (width - hSize) * 0.45;
+  currentX = (width - hSize) * 0.2;
   buildNumber(hours);
   colon1X = currentX + 8;
   currentX += DOT_WIDTH + 2 * NUMBER_SPACING;
