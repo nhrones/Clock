@@ -9,7 +9,6 @@ import {
 
 import { 
    renderDot, 
-   initializeDotPool, 
    tickDots 
 } from './dotPool.ts'
 
@@ -37,6 +36,7 @@ import { toLog } from './dom.ts'
 
 export let width: number
 export let height: number
+
 // a few required clock-face constants
 // these are used to define the shape of
 // our 4 x 7 dot matrix, for the 7-segment 'LED' numbers
@@ -65,9 +65,9 @@ let currentX = 0
 let currentY = 0
 
 /** trails represents a partical trails value */
-let _trails = '0.11' // 0.5 = 0%  0.11 = 50%  0.025 = 100%   
-export const setTrails = (value: number) => {
-   _trails = toLog(value).toFixed(2);
+let alpha = '0.11' // 0.5 = 0%  0.11 = 50%  0.025 = 100%   
+export const setAlpha = (value: number) => {
+   alpha = toLog(value).toFixed(2);
 }
 
 /**
@@ -103,11 +103,6 @@ export const buildClockFace = () => {
    minutes = [createNumber(0, 0), createNumber(0, 0)]
    seconds = [createNumber(0, 0), createNumber(0, 0)]
 
-   // initialize the dot-pool that will contain
-   // and animate dots that are 'freed' from this
-   // clock-face.
-   animatedDots = initializeDotPool()
-
    // fill the background image all solid black
    canvasCTX.fillStyle = "black"
    canvasCTX.fillRect(0, 0, width, height)
@@ -142,7 +137,7 @@ const initCanvas = () => {
  * a transparent fill on the canvas.
  * We would expect ~ 60 frames per second here.
  */
-export const tick = (timestamp: number) => {
+const tick = (timestamp: number) => {
 
    // First, we cover the existing canvas image with a
    // partially-transparent black, effectively dimming all
@@ -159,7 +154,7 @@ export const tick = (timestamp: number) => {
    // Below, the fourth value in 'rgba' is an opacity value   
    // from 0 to 1, where 0 is transparent and 1 is opaque.
    // This vaue is set by the partical trail slider DOM element (SEE: dom.ts)
-   canvasCTX.fillStyle = 'rgba(0, 0, 0, ' + _trails + ')'
+   canvasCTX.fillStyle = 'rgba(0, 0, 0, ' + alpha + ')'
 
    // spray the whole canvas with the above transparent black
    canvasCTX.fillRect(0, 0, width, height)

@@ -1,40 +1,30 @@
 // deno-lint-ignore-file
 
 // src/dotPool.ts
-var CTX = {
-  /** 
-   * A false gravitational pull in the X direction    
-   * (positive = right and negative = left)   
-   * default = 0
-   */
-  GravityX: 0,
-  /** 
-   * A gravitational pull in the positive Y direction(down to floor)     
-   * Have some fun! ... try a negative value
-   * default = 1600
-   */
-  GravityY: 2500,
-  /**
-   * The coefficient of restitution (COR) is the ratio     
-   * of the final to initial relative velocity between     
-   * two objects after they collide.    
-   * 
-   * This represents the amount of 'bounce' a dot will exibit.    
-   * 1.0 = full rebound, and 0.5 will rebound only    
-   * half as high as the distance fallen.    
-   * default = 0.8
-   */
-  Restitution: 0.5,
-  /** 
-   * The Maximum Velocity that a dot may take when it recieves a random velocity.     
-   * default = 2400
-   */
-  MaxVelocity: 2500
+var GravityX = 0;
+var GravityY = 2500;
+var setGravityY = (value) => {
+  GravityY = value * 50;
+};
+var Restitution = 0.5;
+var setRestitution = (value) => {
+  Restitution = value * 0.01;
 };
 var Radius = 14;
 var HalfRadius = Radius * 0.5;
 var Radius_Sqrd = Radius * Radius;
+var MaxVelocity = 2500;
+var setMaxVelocity = (value) => {
+  MaxVelocity = value * 50;
+};
 var Color = "#44f";
+var renderDot = (x, y, color) => {
+  canvasCTX.fillStyle = color || Color;
+  canvasCTX.beginPath();
+  canvasCTX.arc(x, y, HalfRadius, 0, 2 * Math.PI, true);
+  canvasCTX.closePath();
+  canvasCTX.fill();
+};
 var distanceX = 0;
 var distanceY = 0;
 var delta = 0;
@@ -49,10 +39,10 @@ var newDotAx = 0;
 var newDotAy = 0;
 var newDotBx = 0;
 var newDotBy = 0;
-var POOL_SIZE = 1e3;
 var randomVelocity = () => {
-  return (Math.random() - 0.4) * CTX.MaxVelocity;
+  return (Math.random() - 0.4) * MaxVelocity;
 };
+var POOL_SIZE = 500;
 var posX = Array.from({ length: POOL_SIZE }, () => -1);
 var posY = Array.from({ length: POOL_SIZE }, () => 0);
 var lastX = Array.from({ length: POOL_SIZE }, () => -1);
@@ -68,13 +58,12 @@ var tickDots = (thisTime) => {
   testForCollisions(delta);
 };
 function updateDotPositions(delta2) {
-  const resti = CTX.Restitution;
   for (let i2 = 0; i2 < tailPointer + 2; i2++) {
     if (posX[i2] === -1) {
       continue;
     }
-    velocityX[i2] += CTX.GravityX * delta2;
-    velocityY[i2] += CTX.GravityY * delta2;
+    velocityX[i2] += GravityX * delta2;
+    velocityY[i2] += GravityY * delta2;
     posX[i2] += velocityX[i2] * delta2;
     posY[i2] += velocityY[i2] * delta2;
     if (posX[i2] <= Radius || posX[i2] >= width) {
@@ -91,16 +80,16 @@ function updateDotPositions(delta2) {
         if (posX[i2] >= width) {
           posX[i2] = width;
         }
-        velocityX[i2] *= -resti;
+        velocityX[i2] *= -Restitution;
       }
     }
     if (posY[i2] >= height) {
       posY[i2] = height;
-      velocityY[i2] *= -resti;
+      velocityY[i2] *= -Restitution;
     }
     if (posY[i2] <= Radius) {
       posY[i2] = Radius;
-      velocityY[i2] *= -resti;
+      velocityY[i2] *= -Restitution;
     }
     renderFreeDot(i2);
   }
@@ -177,13 +166,6 @@ var renderFreeDot = (i2) => {
   lastX[i2] = posX[i2];
   lastY[i2] = posY[i2];
 };
-function renderDot(x, y, color) {
-  canvasCTX.fillStyle = color || Color;
-  canvasCTX.beginPath();
-  canvasCTX.arc(x, y, HalfRadius, 0, 2 * Math.PI, true);
-  canvasCTX.closePath();
-  canvasCTX.fill();
-}
 
 // src/clockNumber.ts
 var MatrixWidth = 4;
@@ -343,21 +325,25 @@ var init = () => {
   const velocityValue = $("velocity-value");
   const trailsSlider = document.getElementById("trails-slider");
   const trailsValue = $("trails-value");
+  setGravityY(parseInt(gravitySlider.value));
+  setRestitution(parseInt(bounceSlider.value));
+  setMaxVelocity(parseInt(velocitySlider.value));
+  setTrails(parseInt(trailsSlider.value));
   gravitySlider.oninput = () => {
     gravityValue.innerHTML = `    Gravity: ${gravitySlider.value}%`;
-    CTX.GravityY = parseInt(gravitySlider.value);
+    setGravityY(parseInt(gravitySlider.value));
   };
   bounceSlider.oninput = () => {
     bounceValue.innerHTML = `    COR Restitution:   ${bounceSlider.value}%`;
-    CTX.Restitution = parseInt(bounceSlider.value);
+    setRestitution(parseInt(bounceSlider.value));
   };
   velocitySlider.oninput = () => {
     velocityValue.innerHTML = `    Velocity:  ${velocitySlider.value}%`;
-    CTX.MaxVelocity = parseInt(velocitySlider.value);
+    setMaxVelocity(parseInt(velocitySlider.value));
   };
   trailsSlider.oninput = () => {
     trailsValue.innerHTML = `    Partical-Trails:  ${trailsSlider.value}%`;
-    setAlpha(parseInt(trailsSlider.value));
+    setTrails(parseInt(trailsSlider.value));
   };
 };
 function toLog(position) {
@@ -382,9 +368,9 @@ var vSize = 0;
 var i;
 var currentX = 0;
 var currentY = 0;
-var alpha = "0.11";
-var setAlpha = (value) => {
-  alpha = toLog(value).toFixed(2);
+var _trails = "0.11";
+var setTrails = (value) => {
+  _trails = toLog(value).toFixed(2);
 };
 var hours;
 var minutes;
@@ -411,7 +397,7 @@ var initCanvas = () => {
   canvas.height = height;
 };
 var tick = (timestamp) => {
-  canvasCTX.fillStyle = "rgba(0, 0, 0, " + alpha + ")";
+  canvasCTX.fillStyle = "rgba(0, 0, 0, " + _trails + ")";
   canvasCTX.fillRect(0, 0, width, height);
   canvasCTX.fillStyle = "black";
   renderDot(colon1X, currentY + 2 * DOT_HEIGHT);

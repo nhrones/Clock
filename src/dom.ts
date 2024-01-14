@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
-import { setGravityY, setRestitution, setMaxVelocity } from './dotPool.ts';
-import { setTrails } from "./clockFace.ts";
+import { CTX } from './dotPool.ts';
+import { setAlpha } from "./clockFace.ts";
 const $ = (id: string) => document.getElementById(id)
 
 export const init = () => {
@@ -14,33 +14,28 @@ export const init = () => {
    const trailsSlider = document.getElementById('trails-slider') as HTMLInputElement;
    const trailsValue = $('trails-value') as HTMLInputElement;
 
-   setGravityY(parseInt(gravitySlider.value));
-   setRestitution(parseInt(bounceSlider.value));
-   setMaxVelocity(parseInt(velocitySlider.value));
-   setTrails(parseInt(trailsSlider.value));
-
    // gravity
    gravitySlider.oninput = () => {
       gravityValue.innerHTML = `    Gravity: ${gravitySlider.value}%`;
-      setGravityY(parseInt(gravitySlider.value));
+      CTX.GravityY = parseInt(gravitySlider.value)
    };
 
    // bounce
    bounceSlider.oninput = () => {
       bounceValue.innerHTML = `    COR Restitution:   ${bounceSlider.value}%`;
-      setRestitution(parseInt(bounceSlider.value));
+      CTX.Restitution = parseInt(bounceSlider.value)
    };
 
    // velocity
    velocitySlider.oninput = () => {
       velocityValue.innerHTML = `    Velocity:  ${velocitySlider.value}%`;
-      setMaxVelocity(parseInt(velocitySlider.value));
+      CTX.MaxVelocity = parseInt(velocitySlider.value)
    };
 
    // partical trails -- 
    trailsSlider.oninput = () => {
       trailsValue.innerHTML = `    Partical-Trails:  ${trailsSlider.value}%`;
-      setTrails(parseInt(trailsSlider.value));
+      setAlpha(parseInt(trailsSlider.value));
    };
 };
 

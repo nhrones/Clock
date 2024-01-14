@@ -8,11 +8,14 @@
       "ServeFolder": "./",
       "Port": 8080,
       "HotPort": 9099,
+      "BuildTarget": "./dist",
       "Entry": [
          "./src/main.ts"
       ],
       "Watch": [
-         "src"
+         "./src",
+         "./index.html",
+         "styles.css"
       ],
       "Minify": false
    }

@@ -1,40 +1,44 @@
 import { canvasCTX, width, height } from './clockFace.ts'
 
+/** CTX configuration object */
+export const CTX = {
+   /** 
+    * A false gravitational pull in the X direction    
+    * (positive = right and negative = left)   
+    * default = 0
+    */
+   GravityX: 0,
 
-/** A gravitational pull in the X direction    
- * (positive = right and negative = left)   
- *  default = 0
- *  */
-export const GravityX = 0
+   /** 
+    * A gravitational pull in the positive Y direction(down to floor)     
+    * Have some fun! ... try a negative value
+    * default = 1600
+    */
+   GravityY: 2500,
 
-/** A gravitational pull in the positive Y direction(down to floor)     
- * Have some fun! ... try a negative value
- * default = 1600
-*/
-let GravityY = 2500 
-export const setGravityY = (value: number) => { 
-   GravityY = value * 50; 
-}
+   /**
+    * The coefficient of restitution (COR) is the ratio     
+    * of the final to initial relative velocity between     
+    * two objects after they collide.    
+    * 
+    * This represents the amount of 'bounce' a dot will exibit.    
+    * 1.0 = full rebound, and 0.5 will rebound only    
+    * half as high as the distance fallen.    
+    * default = 0.8
+    */
+   Restitution: 0.5,
 
-/**
- * The coefficient of restitution (COR) is the ratio     
- * of the final to initial relative velocity between     
- * two objects after they collide.    
- * 
- * This represents the amount of 'bounce' a dot will exibit.    
- * 1.0 = full rebound, and 0.5 will rebound only    
- * half as high as the distance fallen.    
- * default = 0.8
- */
-let Restitution = 0.5
-export const setRestitution = (value: number) => { 
-   Restitution = value * 0.01;
+   /** 
+    * The Maximum Velocity that a dot may take when it recieves a random velocity.     
+    * default = 2400
+    */
+   MaxVelocity: 2500
 }
 
 /** 
  * The radius of dots   
  * default = 14px
- * */
+ */
 const Radius = 14.0
 
 /**
@@ -42,52 +46,21 @@ const Radius = 14.0
  * We pre-calculated this value to prevent the cost of calculations in loops.    
  * default = 7px
  */
-const HalfRadius = 7.0
+const HalfRadius = Radius * 0.5
 
 /**
  * Radius Squared is used in the calculation of distances between dots.    
  * We pre-calculated this value to prevent the cost of calculations in loops.    
  * default = 14 * 14
  */
-const Radius_Sqrd = 14 * 14
-
-/** 
- * The Maximum Velocity that a dot may take when it recieves a random velocity.     
- * default = 2400
- * */
-let MaxVelocity = 2500
-export const setMaxVelocity = (value: number) => { 
-   MaxVelocity = value * 50 
-}
+const Radius_Sqrd = Radius * Radius
 
 /** 
  * Our default dot color (blue)     
- * */
+ */
 const Color = '#44f'
 
 
-/**
- * Here we draw a dot(circle) on the screen (canvas).    
- * This method is used to create our 'static'    
- * time-value 'numbers' and 'colons' on the screen.
- * These are rendered as simple circles.    
- *     
- * A similar method, DotPool.renderFreeDot, is used to    
- * render animated dots using lines instead of circles.    
- * This will help emulate 'particle-trails'. (SEE: renderFreeDot below)
- */
-export const renderDot = (x: number, y: number, color?: string) => {
-    canvasCTX.fillStyle = color || Color
-    canvasCTX.beginPath()
-    canvasCTX.arc(x, y, HalfRadius, 0, 2 * Math.PI, true)
-    canvasCTX.closePath()
-    canvasCTX.fill()
-}
-
-
-//let idx = 0
-//let i = 0
-//let j = 0
 let distanceX = 0
 let distanceY = 0
 let delta = 0
@@ -141,57 +114,40 @@ let newDotBy = 0
  * This reduced presure on the garbage collector eliminates 'jank' that is common with
  * many forms of javascript animation where objects are created and destroyed per 'tick'.
  */
-//export class DotPool {
 
 /** A 'fixed' maximum number of dots this pool will contain. */
-const POOL_SIZE = 500
-
-/** An array of horizontal dot position values */
-const posX: number[] = []
-
-/** An array of vertical dot position values */
-const posY: number[] = []
-
-/** An array of last-known horizontal location values */
-const lastX: number[] = []
-
-/** An array of last-known vertical location values */
-const lastY: number[] = []
-
-/** An array of horizontal velocity values */
-const velocityX: number[] = []
-
-/** An array of vertical velocity values */
-const velocityY: number[] = []
-
-/** Points to the highest index that is currently set active. */
-let tailPointer = 0
-
-/** The last 'tick' time (used for time-delta calculation). */
-let lastTime = Date.now()
+const POOL_SIZE = 1000
 
 /**
  * Returns a random velocity value
  * clamped by the value of MaxVelocity
  */
 const randomVelocity = () => {
-    return (Math.random() - 0.4) * MaxVelocity
+   return (Math.random() - 0.4) * CTX.MaxVelocity
 }
 
-/**
- * Initializes all DotPool value arrays.
- */
-export function initializeDotPool() {
-    for (let i = 0; i < POOL_SIZE; i++) {
-        posX[i] = -1
-        posY[i] = 0
-        lastX[i] = -1
-        lastY[i] = 0
-        velocityX[i] = randomVelocity()
-        velocityY[i] = randomVelocity()
-    }
-    lastTime = Date.now()
-}
+// ===============================================================================
+//                                                                               |
+//  Fixed arrays that make up all properties required to render animateddots     |
+//                                                                               |
+/** An array of horizontal dot position values where -1 indicates inactive */
+const posX = Array.from({length: POOL_SIZE}, () => -1)
+/** An array of vertical dot position values */
+const posY = Array.from({length: POOL_SIZE}, () => 0)
+/** An array of last-known horizontal location values where -1 indicates inactive */
+const lastX = Array.from({length: POOL_SIZE}, () => -1)
+/** An array of last-known vertical location values */
+const lastY = Array.from({length: POOL_SIZE}, () => 0)
+/** An array of horizontal velocity values, initialized to a random value */
+const velocityX = Array.from({length: POOL_SIZE}, () => randomVelocity())
+/** An array of vertical velocity values, initialized to a random value */
+const velocityY = Array.from({length: POOL_SIZE}, () => randomVelocity())
+//                                                                               |
+// ==============================================================================
+/** Points to the highest index that is currently set active. */
+let tailPointer = 0
+/** The last 'tick' time (used for time-delta calculation). */
+let lastTime = Date.now()
 
 /**
  * The main entry point for DotPool animations.
@@ -214,7 +170,7 @@ export const tickDots = (thisTime: number) => {
  * a wall or floor collision is detected.
  */
 function updateDotPositions(delta: number) {
-
+   const resti = CTX.Restitution
     // loop over all 'active' dots (all dots up to the tail pointer)
     for (let i = 0; i < tailPointer + 2; i++) {
 
@@ -222,8 +178,8 @@ function updateDotPositions(delta: number) {
         if (posX[i] === -1) { continue }
 
         // use gravity to calculate our new velocity and position
-        velocityX[i] += (GravityX * delta)
-        velocityY[i] += (GravityY * delta)
+        velocityX[i] += (CTX.GravityX * delta)
+        velocityY[i] += (CTX.GravityY * delta)
         posX[i] += (velocityX[i] * delta)
         posY[i] += (velocityY[i] * delta)
 
@@ -245,7 +201,7 @@ function updateDotPositions(delta: number) {
                 if (posX[i] <= Radius) { posX[i] = Radius }
                 if (posX[i] >= (width)) { posX[i] = width }
                 // bounce it off the wall (restitution represents bounciness)
-                velocityX[i] *= -Restitution
+                velocityX[i] *= -resti
             }
         }
 
@@ -253,14 +209,14 @@ function updateDotPositions(delta: number) {
         if (posY[i] >= height) {
             posY[i] = height
             // bounce it off the floor (restitution represents bounciness)
-            velocityY[i] *= -Restitution
+            velocityY[i] *= -resti
         }
 
         // did we hit the ceiling? If so, bounce it off the ceiling
         if (posY[i] <= Radius) {
             posY[i] = Radius
             // bounce it off the ceiling (restitution represents bounciness)
-            velocityY[i] *= -Restitution
+            velocityY[i] *= -resti
         }
 
         // draw this dot
@@ -409,4 +365,22 @@ const renderFreeDot = (i: number) => {
     canvasCTX.fill()
     lastX[i] = posX[i]
     lastY[i] = posY[i]
+}
+
+/**
+ * Here we draw a dot(circle) on the screen (canvas).    
+ * This method is used to create our 'static'    
+ * time-value 'numbers' and 'colons' on the screen.
+ * These are rendered as simple circles.    
+ *     
+ * A similar method, DotPool.renderFreeDot, is used to    
+ * render animated dots using lines instead of circles.    
+ * This will help emulate 'particle-trails'. (SEE: renderFreeDot below)
+ */
+export function renderDot (x: number, y: number, color?: string) {
+   canvasCTX.fillStyle = color || Color
+   canvasCTX.beginPath()
+   canvasCTX.arc(x, y, HalfRadius, 0, 2 * Math.PI, true)
+   canvasCTX.closePath()
+   canvasCTX.fill()
 }
