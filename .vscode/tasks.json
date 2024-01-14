@@ -1,20 +1,15 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-        {
-            "type": "shell",
-            "command": "serve",
-            "label": "RUN"
-        },
-        {
+   "version": "2.0.0",
+   "tasks": [
+      {
+         "label": "RUN",
          "type": "shell",
-         "command": "hot",
-         "label": "HOT"
-     },
-     {
-      "type": "shell",
-      "command": "run z.ts",
-      "label": "RUN Z"
-  }
-    ]
+         "command": "serve"
+      },
+      {
+         "label": "HOT",
+         "type": "shell",
+         "command": "hot"
+      }
+   ]
 }

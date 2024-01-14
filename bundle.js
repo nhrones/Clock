@@ -2,18 +2,18 @@
 
 // src/dotPool.ts
 var GravityX = 0;
-var GravityY = 1600;
+var GravityY = 2500;
 var setGravityY = (value) => {
   GravityY = value * 50;
 };
-var Restitution = 0.8;
+var Restitution = 0.5;
 var setRestitution = (value) => {
   Restitution = value * 0.01;
 };
 var Radius = 14;
 var HalfRadius = 7;
 var Radius_Sqrd = 14 * 14;
-var MaxVelocity = 2400;
+var MaxVelocity = 2500;
 var setMaxVelocity = (value) => {
   MaxVelocity = value * 50;
 };
@@ -422,7 +422,8 @@ var tick = (timestamp) => {
   window.requestAnimationFrame(tick);
 };
 var updateTime = (now) => {
-  setDigits(pad2(now.getHours()), hours);
+  const h = now.getHours() > 12 ? now.getHours() - 12 : now.getHours();
+  setDigits(pad2(h), hours);
   setDigits(pad2(now.getMinutes()), minutes);
   setDigits(pad2(now.getSeconds()), seconds);
 };

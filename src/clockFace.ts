@@ -190,9 +190,9 @@ export const tick = (timestamp: number) => {
  * Called on each 'tick'
  */
 const updateTime = (now: Date) => {
-
+   const h = (now.getHours() > 12) ? now.getHours() - 12 : now.getHours();
    // set the current hours display
-   setDigits(pad2(now.getHours()), hours)
+   setDigits(pad2(h), hours)
 
    // set the current minutes display
    setDigits(pad2(now.getMinutes()), minutes)

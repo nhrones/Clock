@@ -11,7 +11,9 @@
       "Entry": [
          "./src/main.ts"
       ],
-      "Watch": "src",
+      "Watch": [
+         "src"
+      ],
       "Minify": false
    }
 }
