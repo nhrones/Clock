@@ -39,7 +39,7 @@ export const CTX = {
  * The radius of dots   
  * default = 14px
  */
-const Radius = 14 
+const Radius = 14
 
 /**
  * Half the Radius. Used in the rendering calculation of arcs(circles).    
@@ -67,7 +67,6 @@ let thisDistanceSquared = 0
 let velocityDiffX = 0
 let velocityDiffY = 0
 let actualDistance = 0
-
 let ratioX = 0
 let ratioY = 0
 let impactSpeed = 0
@@ -144,35 +143,38 @@ const randomVelocity = () => {
 //    }                                                                          |                                                         |
 //                                                                               |  
 /** An array of horizontal dot position values where zero indicates inactive */
-const posX = Array.from({length: POOL_SIZE}, () => 0)
+const posX = Array.from({ length: POOL_SIZE }, () => 0)
 /** An array of vertical dot position values */
-const posY = Array.from({length: POOL_SIZE}, () => 0)
+const posY = Array.from({ length: POOL_SIZE }, () => 0)
 /** An array of last-known horizontal location values where zero indicates inactive */
-const lastX = Array.from({length: POOL_SIZE}, () => 0)
+const lastX = Array.from({ length: POOL_SIZE }, () => 0)
 /** An array of last-known vertical location values */
-const lastY = Array.from({length: POOL_SIZE}, () => 0)
+const lastY = Array.from({ length: POOL_SIZE }, () => 0)
 /** An array of horizontal velocity values, initialized to a random value */
-const velocityX = Array.from({length: POOL_SIZE}, () => randomVelocity())
+const velocityX = Array.from({ length: POOL_SIZE }, () => randomVelocity())
 /** An array of vertical velocity values, initialized to a random value */
-const velocityY = Array.from({length: POOL_SIZE}, () => randomVelocity())
+const velocityY = Array.from({ length: POOL_SIZE }, () => randomVelocity())
 //                                                                               |
 // ==============================================================================
+
 /** Points to the highest index that is currently set active. */
 let tailPointer = 0
+
 /** The last 'tick' time (used for time-delta calculation). */
 let lastTime = Date.now()
 
 /**
  * The main entry point for DotPool animations.
- * (called from the ClockFace animation loop 'ClockFace.tick()').
- * ClockFace.tick() is triggered by window.requestAnimationFrame().
- * We would expect ~ 60 frames per second here.
+ * (called from the clockFace animation loop 'tick()').
+ * 
+ * tick() in clockFace is triggered by window.requestAnimationFrame().
+ * We expect ~ 60 frames per second here.
  */
 export const tickDots = (thisTime: number) => {
-    delta = (thisTime - lastTime) / 1000
-    lastTime = thisTime
-    updateDotPositions(delta)
-    testForCollisions(delta)
+   delta = (thisTime - lastTime) / 1000
+   lastTime = thisTime
+   updateDotPositions(delta)
+   testForCollisions(delta)
 }
 
 /**
@@ -183,56 +185,56 @@ export const tickDots = (thisTime: number) => {
  * a wall or floor collision is detected.
  */
 function updateDotPositions(delta: number) {
-    // loop over all 'active' dots (all dots up to the tail pointer)
-    for (let i = 0; i < tailPointer + 2; i++) {
+   // loop over all 'active' dots (all dots up to the tail pointer)
+   for (let i = 0; i < tailPointer + 2; i++) {
 
-        // if this dot is inactive, skip over it and go on to the next
-        if (posX[i] === 0) { continue }
+      // if this dot is inactive, skip over it and go on to the next
+      if (posX[i] === 0) { continue }
 
-        // use gravity to calculate our new velocity and position
-        velocityX[i] += CTX.GravityX * delta
-        velocityY[i] += CTX.GravityY * delta
-        posX[i] += velocityX[i] * delta
-        posY[i] += velocityY[i] * delta
+      // use gravity to calculate our new velocity and position
+      velocityX[i] += CTX.GravityX * delta
+      velocityY[i] += CTX.GravityY * delta
+      posX[i] += velocityX[i] * delta
+      posY[i] += velocityY[i] * delta
 
-        // did we hit a wall?
-        if ((posX[i] <= Radius) || (posX[i] >= (width))) {
+      // did we hit a wall?
+      if ((posX[i] <= Radius) || (posX[i] >= (width))) {
 
-            // has it rolled off either end on the floor?
-            if (posY[i] >= height - 2) {
-                posX[i] = 0 // zero will inactivate this dot
+         // has it rolled off either end on the floor?
+         if (posY[i] >= height - 2) {
+            posX[i] = 0 // zero will inactivate this dot
 
-                // if this was the tail, decrement the tailPointer
-                if (i === tailPointer) {
-                    tailPointer--
-                }
-                continue
-                // it was'nt on the floor so ... boune it off the wall
-            } else {
-                if (posX[i] <= Radius) { posX[i] = Radius }
-                if (posX[i] >= (width)) { posX[i] = width }
-                // bounce it off the wall (restitution represents bounciness)
-                velocityX[i] *= -CTX.Restitution
+            // if this was the tail, decrement the tailPointer
+            if (i === tailPointer) {
+               tailPointer--
             }
-        }
+            continue
+            // it was'nt on the floor so ... boune it off the wall
+         } else {
+            if (posX[i] <= Radius) { posX[i] = Radius }
+            if (posX[i] >= (width)) { posX[i] = width }
+            // bounce it off the wall (restitution represents bounciness)
+            velocityX[i] *= -CTX.Restitution
+         }
+      }
 
-        // did we hit the floor? If so, bounce it off the floor
-        if (posY[i] >= height) {
-            posY[i] = height
-            // bounce it off the floor (restitution represents bounciness)
-            velocityY[i] *= -CTX.Restitution
-        }
+      // did we hit the floor? If so, bounce it off the floor
+      if (posY[i] >= height) {
+         posY[i] = height
+         // bounce it off the floor (restitution represents bounciness)
+         velocityY[i] *= -CTX.Restitution
+      }
 
-        // did we hit the ceiling? If so, bounce it off the ceiling
-        if (posY[i] <= Radius) {
-            posY[i] = Radius
-            // bounce it off the ceiling (restitution represents bounciness)
-            velocityY[i] *= -CTX.Restitution
-        }
+      // did we hit the ceiling? If so, bounce it off the ceiling
+      if (posY[i] <= Radius) {
+         posY[i] = Radius
+         // bounce it off the ceiling (restitution represents bounciness)
+         velocityY[i] *= -CTX.Restitution
+      }
 
-        // draw this dot
-        renderFreeDot(i)
-    }
+      // draw this dot
+      renderFreeDot(i)
+   }
 }
 
 /**
@@ -242,39 +244,42 @@ function updateDotPositions(delta: number) {
  */
 function testForCollisions(delta: number) {
 
-    // loop over all active dots in the pool
-    for (let i = 0; i < tailPointer + 2; i++) {
-        // is this dot active?
-        if (posX[i] === 0) { continue }
-        // test this active dot against all other active dots
-        for (let j = 0; j < tailPointer + 2; j++) {
-            if (i === j) { continue } // same dot, can't collide with self
-            if (posX[j] === 0) { continue } // not an active dot
-            distanceX = Math.abs(posX[i] - posX[j])
-            distanceY = Math.abs(posY[i] - posY[j])
+   // loop over all active dots in the pool
+   for (let i = 0; i < tailPointer + 2; i++) {
 
-            // for efficiency, we use only the squared-distance
-            // not the square-root of the squared-distance. square-root is very expensive
-            thisDistanceSquared = distanceX ** 2 + distanceY ** 2
+      // is this dot active?
+      if (posX[i] === 0) { continue }
 
-            // Are we about to collide?
-            // here we compare the squared-distance to the squared-radius of a dot
-            // again, we avoid expensive square-root calculations
-            if (thisDistanceSquared < Radius_Sqrd) {
+      // test this active dot against all other active dots
+      for (let j = 0; j < tailPointer + 2; j++) {
+         if (i === j) { continue } // same dot, can't collide with self
+         if (posX[j] === 0) { continue } // not an active dot
+         distanceX = Math.abs(posX[i] - posX[j])
+         distanceY = Math.abs(posY[i] - posY[j])
 
-                // the distance apart is less than a dots radius ... is it about to get greater?
-                // To see if dots are moving away from each other
-                // we calculate a future position based on the last delta.
-                if (newDistanceSquared(delta, i, j) > thisDistanceSquared) {
-                    // distance apart is increasing, so these dots are moving away from each other
-                    // just ignor and continue
-                    continue
-                }
-                // if we got here we've collided
-                collideDots(i, j, distanceX, distanceY)
+         // for efficiency, we use only the squared-distance
+         // not the square-root of the squared-distance. square-root is very expensive
+         thisDistanceSquared = distanceX ** 2 + distanceY ** 2
+
+         // Are we about to collide?
+         // here we compare the squared-distance to the squared-radius of a dot
+         // again, we avoid expensive square-root calculations
+         if (thisDistanceSquared < Radius_Sqrd) {
+
+            // the distance apart is less than a dots radius ... is it about to get greater?
+            // To see if dots are moving away from each other
+            // we calculate a future position based on the last delta.
+            if (newDistanceSquared(delta, i, j) > thisDistanceSquared) {
+               // distance apart is increasing, so these dots are moving away from each other
+               // just ignor and continue
+               continue
             }
-        }
-    }
+            
+            // if we got here we've collided
+            collideDots(i, j, distanceX, distanceY)
+         }
+      }
+   }
 }
 
 /**
@@ -283,26 +288,27 @@ function testForCollisions(delta: number) {
  */
 function collideDots(dotA: number, dotB: number, distanceX: number, distanceY: number) {
 
-    thisDistanceSquared = distanceX ** 2 + distanceY ** 2
+   // this gives us a distance value
+   thisDistanceSquared = distanceX ** 2 + distanceY ** 2
 
-    velocityDiffX = velocityX[dotA] - velocityX[dotB]
-    velocityDiffY = velocityY[dotA] - velocityY[dotB]
+   velocityDiffX = velocityX[dotA] - velocityX[dotB]
+   velocityDiffY = velocityY[dotA] - velocityY[dotB]
 
-    // get the actual absolute distance (hypotenuse)
-    actualDistance = Math.sqrt(thisDistanceSquared)
+   // get the actual absolute distance (hypotenuse)
+   actualDistance = Math.sqrt(thisDistanceSquared)
 
-    // now we can callculate each dots new velocities
+   // now we can callculate each dots new velocities
 
-    // convert the distances to ratios
-    ratioX = distanceX / actualDistance
-    ratioY = distanceY / actualDistance
+   // convert the distances to ratios
+   ratioX = distanceX / actualDistance
+   ratioY = distanceY / actualDistance
 
-    // apply the speed (based on the ratios) to the velocity vectors
-    impactSpeed = (velocityDiffX * ratioX) + (velocityDiffY * ratioY)
-    velocityX[dotA] -= ratioX * impactSpeed
-    velocityY[dotA] -= ratioY * impactSpeed
-    velocityX[dotB] += ratioX * impactSpeed
-    velocityY[dotB] += ratioY * impactSpeed
+   // apply the speed (based on the ratios) to the velocity vectors
+   impactSpeed = (velocityDiffX * ratioX) + (velocityDiffY * ratioY)
+   velocityX[dotA] -= ratioX * impactSpeed
+   velocityY[dotA] -= ratioY * impactSpeed
+   velocityX[dotB] += ratioX * impactSpeed
+   velocityY[dotB] += ratioY * impactSpeed
 }
 
 /**
@@ -312,11 +318,11 @@ function collideDots(dotA: number, dotB: number, distanceX: number, distanceY: n
  * moving toward, or away, from one another.
  */
 function newDistanceSquared(delta: number, a: number, b: number) {
-    newDotAx = posX[a] + (velocityX[a] * delta)
-    newDotAy = posY[a] + (velocityY[a] * delta)
-    newDotBx = posX[b] + (velocityX[b] * delta)
-    newDotBy = posY[b] + (velocityY[b] * delta)
-    return (Math.abs(newDotAx - newDotBx) ** 2) + (Math.abs(newDotAy - newDotBy) ** 2)
+   newDotAx = posX[a] + (velocityX[a] * delta)
+   newDotAy = posY[a] + (velocityY[a] * delta)
+   newDotBx = posX[b] + (velocityX[b] * delta)
+   newDotBy = posY[b] + (velocityY[b] * delta)
+   return (Math.abs(newDotAx - newDotBx) ** 2) + (Math.abs(newDotAy - newDotBy) ** 2)
 }
 
 /**
@@ -332,23 +338,23 @@ function newDistanceSquared(delta: number, a: number, b: number) {
  * our active pool size.
  */
 export function activateDot(x: number, y: number) {
-    // loop though the pool to find an unused index
-    // a value of 'zero' for posX is used to indicate 'inactive'
-    for (let idx = 0; idx < tailPointer + 2; idx++) {
-        if (posX[idx] === 0) {
-            // add values for this dots location (this makes it 'active')
-            posX[idx] = x
-            posY[idx] = y
-            lastX[idx] = x
-            lastY[idx] = y
-            velocityX[idx] = randomVelocity()
-            velocityY[idx] = randomVelocity()
-            // if this is past the tail, make this the new tail
-            if (idx > tailPointer) tailPointer = idx
-            // we're all done, break out of this loop
-            break;
-        }
-    }
+   // loop though the pool to find an unused index
+   // a value of 'zero' for posX is used to indicate 'inactive'
+   for (let idx = 0; idx < tailPointer + 2; idx++) {
+      if (posX[idx] === 0) {
+         // add values for this dots location (this makes it 'active')
+         posX[idx] = x
+         posY[idx] = y
+         lastX[idx] = x
+         lastY[idx] = y
+         velocityX[idx] = randomVelocity()
+         velocityY[idx] = randomVelocity()
+         // if this is past the tail, make this the new tail
+         if (idx > tailPointer) tailPointer = idx
+         // we're all done, break out of this loop
+         break;
+      }
+   }
 }
 
 
@@ -364,17 +370,17 @@ export function activateDot(x: number, y: number) {
  * SEE: ClockFace.tick() to understand this phenomenon.
  */
 const renderFreeDot = (i: number) => {
-    canvasCTX.beginPath()
-    canvasCTX.fillStyle = Color
-    canvasCTX.strokeStyle = Color
-    canvasCTX.lineWidth = Radius
-    canvasCTX.moveTo(lastX[i] - Radius, lastY[i] - Radius)
-    canvasCTX.lineTo(posX[i] - Radius, posY[i] - Radius)
-    canvasCTX.stroke()
-    canvasCTX.closePath()
-    canvasCTX.fill()
-    lastX[i] = posX[i]
-    lastY[i] = posY[i]
+   canvasCTX.beginPath()
+   canvasCTX.fillStyle = Color
+   canvasCTX.strokeStyle = Color
+   canvasCTX.lineWidth = Radius
+   canvasCTX.moveTo(lastX[i] - Radius, lastY[i] - Radius)
+   canvasCTX.lineTo(posX[i] - Radius, posY[i] - Radius)
+   canvasCTX.stroke()
+   canvasCTX.closePath()
+   canvasCTX.fill()
+   lastX[i] = posX[i]
+   lastY[i] = posY[i]
 }
 
 /**
@@ -387,7 +393,7 @@ const renderFreeDot = (i: number) => {
  * render animated dots using lines instead of circles.    
  * This will help emulate 'particle-trails'. (SEE: renderFreeDot below)
  */
-export function renderDot (x: number, y: number, color?: string) {
+export function renderDot(x: number, y: number, color?: string) {
    canvasCTX.fillStyle = color || Color
    canvasCTX.beginPath()
    canvasCTX.arc(x, y, HalfRadius, 0, 2 * Math.PI, true)
