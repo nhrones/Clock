@@ -39,12 +39,11 @@ export const CTX = {
  * The radius of dots   
  * default = 14px
  */
-const Radius = 14.0
+const Radius = 14 
 
 /**
  * Half the Radius. Used in the rendering calculation of arcs(circles).    
  * We pre-calculated this value to prevent the cost of calculations in loops.    
- * default = 7px
  */
 const HalfRadius = Radius * 0.5
 
@@ -60,7 +59,7 @@ const Radius_Sqrd = Radius * Radius
  */
 const Color = '#44f'
 
-
+// reusable values
 let distanceX = 0
 let distanceY = 0
 let delta = 0
@@ -88,7 +87,7 @@ let newDotBy = 0
  *
  * We simply activate or inactivate an index(dot), by setting the value    
  * of the posX array. A positive integer in the posX array indicates    
- * 'active', and a value of -1 indicates an inactive index.    
+ * 'active', and a value of zero indicates an inactive index.    
  * Any index with an active posX value will be updated, tested for    
  * collisions, and rendered to the canvas.    
  *
@@ -97,9 +96,9 @@ let newDotBy = 0
  * This 'tail pointer' allows all 'loops' to only loop over elements presumed 
  * to be active.
  * These loops, from 0 to TailPointer, will also short circuit any index in
- * the loop that is inactive (has a posX value of -1).
+ * the loop that is inactive (has a posX value of zero).
  *
- * When a dot falls off the edge of the canvas, its posX is set inactive(-1).
+ * When a dot falls off the edge of the canvas, its posX is set inactive(zero).
  * If that dots index is equal to the tail-pointer value, we decrement
  * the TailPointer, effectively reducing the active pool size.
  *
@@ -123,19 +122,33 @@ const POOL_SIZE = 1000
  * clamped by the value of MaxVelocity
  */
 const randomVelocity = () => {
+   // returns a random value
    return (Math.random() - 0.4) * CTX.MaxVelocity
 }
 
 // ===============================================================================
 //                                                                               |
-//  Fixed arrays that make up all properties required to render animateddots     |
+//    Below is a set of fixed size arrays that make up all required              |
+//    properties needed to create a pool of reusable animated dots.              |
 //                                                                               |
-/** An array of horizontal dot position values where -1 indicates inactive */
-const posX = Array.from({length: POOL_SIZE}, () => -1)
+//    These individual property arrays would replace the use of an               |
+//    array of objects:                                                          |
+//                                                                               |
+//    const Dot = {                                                              |
+//       posX: number,                                                           |
+//       posY: number,                                                           |
+//       lastX: number,                                                          |
+//       lastY: number,                                                          |
+//       velocityX: number,                                                      |
+//       velocityY: number                                                       |
+//    }                                                                          |                                                         |
+//                                                                               |  
+/** An array of horizontal dot position values where zero indicates inactive */
+const posX = Array.from({length: POOL_SIZE}, () => 0)
 /** An array of vertical dot position values */
 const posY = Array.from({length: POOL_SIZE}, () => 0)
-/** An array of last-known horizontal location values where -1 indicates inactive */
-const lastX = Array.from({length: POOL_SIZE}, () => -1)
+/** An array of last-known horizontal location values where zero indicates inactive */
+const lastX = Array.from({length: POOL_SIZE}, () => 0)
 /** An array of last-known vertical location values */
 const lastY = Array.from({length: POOL_SIZE}, () => 0)
 /** An array of horizontal velocity values, initialized to a random value */
@@ -156,7 +169,7 @@ let lastTime = Date.now()
  * We would expect ~ 60 frames per second here.
  */
 export const tickDots = (thisTime: number) => {
-    delta = ((thisTime - lastTime) / 1000.0)
+    delta = (thisTime - lastTime) / 1000
     lastTime = thisTime
     updateDotPositions(delta)
     testForCollisions(delta)
@@ -170,38 +183,36 @@ export const tickDots = (thisTime: number) => {
  * a wall or floor collision is detected.
  */
 function updateDotPositions(delta: number) {
-   const resti = CTX.Restitution
     // loop over all 'active' dots (all dots up to the tail pointer)
     for (let i = 0; i < tailPointer + 2; i++) {
 
         // if this dot is inactive, skip over it and go on to the next
-        if (posX[i] === -1) { continue }
+        if (posX[i] === 0) { continue }
 
         // use gravity to calculate our new velocity and position
-        velocityX[i] += (CTX.GravityX * delta)
-        velocityY[i] += (CTX.GravityY * delta)
-        posX[i] += (velocityX[i] * delta)
-        posY[i] += (velocityY[i] * delta)
+        velocityX[i] += CTX.GravityX * delta
+        velocityY[i] += CTX.GravityY * delta
+        posX[i] += velocityX[i] * delta
+        posY[i] += velocityY[i] * delta
 
         // did we hit a wall?
         if ((posX[i] <= Radius) || (posX[i] >= (width))) {
 
             // has it rolled off either end on the floor?
             if (posY[i] >= height - 2) {
-                posX[i] = -1 // -1 will inactivate this dot
+                posX[i] = 0 // zero will inactivate this dot
 
                 // if this was the tail, decrement the tailPointer
                 if (i === tailPointer) {
                     tailPointer--
                 }
                 continue
-
                 // it was'nt on the floor so ... boune it off the wall
             } else {
                 if (posX[i] <= Radius) { posX[i] = Radius }
                 if (posX[i] >= (width)) { posX[i] = width }
                 // bounce it off the wall (restitution represents bounciness)
-                velocityX[i] *= -resti
+                velocityX[i] *= -CTX.Restitution
             }
         }
 
@@ -209,14 +220,14 @@ function updateDotPositions(delta: number) {
         if (posY[i] >= height) {
             posY[i] = height
             // bounce it off the floor (restitution represents bounciness)
-            velocityY[i] *= -resti
+            velocityY[i] *= -CTX.Restitution
         }
 
         // did we hit the ceiling? If so, bounce it off the ceiling
         if (posY[i] <= Radius) {
             posY[i] = Radius
             // bounce it off the ceiling (restitution represents bounciness)
-            velocityY[i] *= -resti
+            velocityY[i] *= -CTX.Restitution
         }
 
         // draw this dot
@@ -234,11 +245,11 @@ function testForCollisions(delta: number) {
     // loop over all active dots in the pool
     for (let i = 0; i < tailPointer + 2; i++) {
         // is this dot active?
-        if (posX[i] === -1) { continue }
+        if (posX[i] === 0) { continue }
         // test this active dot against all other active dots
         for (let j = 0; j < tailPointer + 2; j++) {
             if (i === j) { continue } // same dot, can't collide with self
-            if (posX[j] === -1) { continue } // not an active dot
+            if (posX[j] === 0) { continue } // not an active dot
             distanceX = Math.abs(posX[i] - posX[j])
             distanceY = Math.abs(posY[i] - posY[j])
 
@@ -278,7 +289,7 @@ function collideDots(dotA: number, dotB: number, distanceX: number, distanceY: n
     velocityDiffY = velocityY[dotA] - velocityY[dotB]
 
     // get the actual absolute distance (hypotenuse)
-    actualDistance = Math.sqrt(thisDistanceSquared);
+    actualDistance = Math.sqrt(thisDistanceSquared)
 
     // now we can callculate each dots new velocities
 
@@ -322,9 +333,9 @@ function newDistanceSquared(delta: number, a: number, b: number) {
  */
 export function activateDot(x: number, y: number) {
     // loop though the pool to find an unused index
-    // a value of '-1' for posX is used to indicate 'inactive'
+    // a value of 'zero' for posX is used to indicate 'inactive'
     for (let idx = 0; idx < tailPointer + 2; idx++) {
-        if (posX[idx] === -1) {
+        if (posX[idx] === 0) {
             // add values for this dots location (this makes it 'active')
             posX[idx] = x
             posY[idx] = y
@@ -332,9 +343,8 @@ export function activateDot(x: number, y: number) {
             lastY[idx] = y
             velocityX[idx] = randomVelocity()
             velocityY[idx] = randomVelocity()
-            // if this is past the tail, make this the tailPointer
+            // if this is past the tail, make this the new tail
             if (idx > tailPointer) tailPointer = idx
-
             // we're all done, break out of this loop
             break;
         }

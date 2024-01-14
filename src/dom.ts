@@ -17,19 +17,19 @@ export const init = () => {
    // gravity
    gravitySlider.oninput = () => {
       gravityValue.innerHTML = `    Gravity: ${gravitySlider.value}%`;
-      CTX.GravityY = parseInt(gravitySlider.value)
+      CTX.GravityY = (parseInt(gravitySlider.value) * 50) | 0
    };
 
-   // bounce
+   // coefficient of restitution (COR) -- bounce
    bounceSlider.oninput = () => {
       bounceValue.innerHTML = `    COR Restitution:   ${bounceSlider.value}%`;
-      CTX.Restitution = parseInt(bounceSlider.value)
+      CTX.Restitution = parseInt(bounceSlider.value) * .01
    };
 
    // velocity
    velocitySlider.oninput = () => {
       velocityValue.innerHTML = `    Velocity:  ${velocitySlider.value}%`;
-      CTX.MaxVelocity = parseInt(velocitySlider.value)
+      CTX.MaxVelocity = (parseInt(velocitySlider.value) * 50) | 0
    };
 
    // partical trails -- 

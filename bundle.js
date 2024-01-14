@@ -53,9 +53,9 @@ var POOL_SIZE = 1e3;
 var randomVelocity = () => {
   return (Math.random() - 0.4) * CTX.MaxVelocity;
 };
-var posX = Array.from({ length: POOL_SIZE }, () => -1);
+var posX = Array.from({ length: POOL_SIZE }, () => 0);
 var posY = Array.from({ length: POOL_SIZE }, () => 0);
-var lastX = Array.from({ length: POOL_SIZE }, () => -1);
+var lastX = Array.from({ length: POOL_SIZE }, () => 0);
 var lastY = Array.from({ length: POOL_SIZE }, () => 0);
 var velocityX = Array.from({ length: POOL_SIZE }, () => randomVelocity());
 var velocityY = Array.from({ length: POOL_SIZE }, () => randomVelocity());
@@ -68,9 +68,8 @@ var tickDots = (thisTime) => {
   testForCollisions(delta);
 };
 function updateDotPositions(delta2) {
-  const resti = CTX.Restitution;
   for (let i2 = 0; i2 < tailPointer + 2; i2++) {
-    if (posX[i2] === -1) {
+    if (posX[i2] === 0) {
       continue;
     }
     velocityX[i2] += CTX.GravityX * delta2;
@@ -79,7 +78,7 @@ function updateDotPositions(delta2) {
     posY[i2] += velocityY[i2] * delta2;
     if (posX[i2] <= Radius || posX[i2] >= width) {
       if (posY[i2] >= height - 2) {
-        posX[i2] = -1;
+        posX[i2] = 0;
         if (i2 === tailPointer) {
           tailPointer--;
         }
@@ -91,30 +90,30 @@ function updateDotPositions(delta2) {
         if (posX[i2] >= width) {
           posX[i2] = width;
         }
-        velocityX[i2] *= -resti;
+        velocityX[i2] *= -CTX.Restitution;
       }
     }
     if (posY[i2] >= height) {
       posY[i2] = height;
-      velocityY[i2] *= -resti;
+      velocityY[i2] *= -CTX.Restitution;
     }
     if (posY[i2] <= Radius) {
       posY[i2] = Radius;
-      velocityY[i2] *= -resti;
+      velocityY[i2] *= -CTX.Restitution;
     }
     renderFreeDot(i2);
   }
 }
 function testForCollisions(delta2) {
   for (let i2 = 0; i2 < tailPointer + 2; i2++) {
-    if (posX[i2] === -1) {
+    if (posX[i2] === 0) {
       continue;
     }
     for (let j = 0; j < tailPointer + 2; j++) {
       if (i2 === j) {
         continue;
       }
-      if (posX[j] === -1) {
+      if (posX[j] === 0) {
         continue;
       }
       distanceX = Math.abs(posX[i2] - posX[j]);
@@ -151,7 +150,7 @@ function newDistanceSquared(delta2, a, b) {
 }
 function activateDot(x, y) {
   for (let idx = 0; idx < tailPointer + 2; idx++) {
-    if (posX[idx] === -1) {
+    if (posX[idx] === 0) {
       posX[idx] = x;
       posY[idx] = y;
       lastX[idx] = x;
@@ -345,15 +344,15 @@ var init = () => {
   const trailsValue = $("trails-value");
   gravitySlider.oninput = () => {
     gravityValue.innerHTML = `    Gravity: ${gravitySlider.value}%`;
-    CTX.GravityY = parseInt(gravitySlider.value);
+    CTX.GravityY = parseInt(gravitySlider.value) * 50 | 0;
   };
   bounceSlider.oninput = () => {
     bounceValue.innerHTML = `    COR Restitution:   ${bounceSlider.value}%`;
-    CTX.Restitution = parseInt(bounceSlider.value);
+    CTX.Restitution = parseInt(bounceSlider.value) * 0.01;
   };
   velocitySlider.oninput = () => {
     velocityValue.innerHTML = `    Velocity:  ${velocitySlider.value}%`;
-    CTX.MaxVelocity = parseInt(velocitySlider.value);
+    CTX.MaxVelocity = parseInt(velocitySlider.value) * 50 | 0;
   };
   trailsSlider.oninput = () => {
     trailsValue.innerHTML = `    Partical-Trails:  ${trailsSlider.value}%`;
