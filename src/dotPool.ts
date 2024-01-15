@@ -15,7 +15,7 @@ export const CTX = {
     * Have some fun! ... try a negative value
     * default = 1600
     */
-   GravityY: 2500,
+   GravityY: 750,
 
    /**
     * The coefficient of restitution (COR) is the ratio     
@@ -33,7 +33,7 @@ export const CTX = {
     * The Maximum Velocity that a dot may take when it recieves a random velocity.     
     * default = 2400
     */
-   MaxVelocity: 2500
+   MaxVelocity: 750
 }
 
 /** 

@@ -44,12 +44,13 @@ let currentX = 0
 let currentY = 0
 
 /** represents a partical trails value */
-let alpha = '0.11' // 0.5 = 0%  0.11 = 50%  0.025 = 90%   
+let alpha = '0.1' // 0.5 = 0%  0.1 = 50%  0.025 = 90%   
 export const setAlpha = (position: number) => {
    const minVal = Math.log(0.5);   // 0% alpha
    const maxVal = Math.log(0.025); // 90$ alpha
    const scale = (maxVal - minVal) / 100;
    alpha = (Math.exp(minVal + scale * position).toFixed(2));
+   //console.log('alpha ', alpha)
 }
 
 /**
@@ -155,13 +156,9 @@ function tick (timestamp: number) {
  * Called on each 'tick'
  */
 function updateTime (now: Date) {
-   let hour = now.getHours()   
-
-   // converts 24 hr to 12 hr time
-   hour = (hour > 12) ? hour - 12 : hour;    
 
    // set the current hours display
-   setDigits(pad2(hour, true), hours)
+   setDigits(pad2(now.getHours()), hours)
 
    // set the current minutes display
    setDigits(pad2(now.getMinutes()), minutes)
@@ -175,9 +172,7 @@ function updateTime (now: Date) {
  * SEE: ClockNumber.setPixels()
  */
 function setDigits (digits: string, numbers: ClockNumber[]) {
-   // if first diget of hour is a blank space, make it a 10
-   const firstNum = (digits[0] === " ") ? 10 : 0
-   numbers[0].drawPixels(PIXELS[firstNum])
+   numbers[0].drawPixels(PIXELS[parseInt(digits[0])])
    numbers[1].drawPixels(PIXELS[parseInt(digits[1])])
 }
 
@@ -203,7 +198,7 @@ function createNumbers () {
 
    // Next, initialize the horizontal position (x)
    // We will manipulate this several times as we build up the display
-   currentX = (width - hSize) * 0.2 //0.45
+   currentX = (width - hSize) * 0.4 //ndh
 
    // go build the 'hours' display 
    buildNumber(hours)
@@ -241,8 +236,6 @@ function buildNumber (digits: ClockNumber[]) {
  * Convert a number to a string and add a
  * leading zero to any number less than 10.
  */
-function pad2 (num: number, hr = false) {
-   // if hour, pad the first number as a space; else zero
-   const pad = (hr) ? " " : "0";
-   return (num < 10) ? pad + num.toString() : num.toString()
+function pad2 (num: number) {
+   return (num < 10) ? "0" + num.toString() : num.toString()
 }

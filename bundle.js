@@ -106,16 +106,6 @@ var PIXELS = [
     [0, 0, 0, 1],
     [0, 0, 0, 1],
     [1, 1, 1, 1]
-  ],
-  // 'ten - space'
-  [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0]
   ]
 ];
 
@@ -132,7 +122,7 @@ var CTX = {
    * Have some fun! ... try a negative value
    * default = 1600
    */
-  GravityY: 2500,
+  GravityY: 750,
   /**
    * The coefficient of restitution (COR) is the ratio     
    * of the final to initial relative velocity between     
@@ -148,7 +138,7 @@ var CTX = {
    * The Maximum Velocity that a dot may take when it recieves a random velocity.     
    * default = 2400
    */
-  MaxVelocity: 2500
+  MaxVelocity: 750
 };
 var Radius = 14;
 var HalfRadius = Radius * 0.5;
@@ -391,7 +381,7 @@ var vSize = 0;
 var i;
 var currentX = 0;
 var currentY = 0;
-var alpha = "0.11";
+var alpha = "0.1";
 var setAlpha = (position) => {
   const minVal = Math.log(0.5);
   const maxVal = Math.log(0.025);
@@ -429,22 +419,19 @@ function tick(timestamp) {
   self.requestAnimationFrame(tick);
 }
 function updateTime(now) {
-  let hour = now.getHours();
-  hour = hour > 12 ? hour - 12 : hour;
-  setDigits(pad2(hour, true), hours);
+  setDigits(pad2(now.getHours()), hours);
   setDigits(pad2(now.getMinutes()), minutes);
   setDigits(pad2(now.getSeconds()), seconds);
 }
 function setDigits(digits, numbers) {
-  const firstNum = digits[0] === " " ? 10 : 0;
-  numbers[0].drawPixels(PIXELS[firstNum]);
+  numbers[0].drawPixels(PIXELS[parseInt(digits[0])]);
   numbers[1].drawPixels(PIXELS[parseInt(digits[1])]);
 }
 function createNumbers() {
   hSize = (DOT_WIDTH * MATRIX_WIDTH + NUMBER_SPACING) * 6 + (DOT_WIDTH + NUMBER_SPACING) * 2 - NUMBER_SPACING;
   vSize = DOT_HEIGHT * MATRIX_HEIGHT;
   currentY = (height - vSize) * 0.33;
-  currentX = (width - hSize) * 0.2;
+  currentX = (width - hSize) * 0.4;
   buildNumber(hours);
   colon1X = currentX + 8;
   currentX += DOT_WIDTH + 2 * NUMBER_SPACING;
@@ -459,9 +446,8 @@ function buildNumber(digits) {
     currentX += DOT_WIDTH * MATRIX_WIDTH + NUMBER_SPACING;
   }
 }
-function pad2(num, hr = false) {
-  const pad = hr ? " " : "0";
-  return num < 10 ? pad + num.toString() : num.toString();
+function pad2(num) {
+  return num < 10 ? "0" + num.toString() : num.toString();
 }
 
 // src/main.ts
