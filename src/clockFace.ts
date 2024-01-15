@@ -1,18 +1,12 @@
-// deno-lint-ignore-file no-unused-vars no-window-prefix
+/// <reference lib="dom" />
 import { 
-   PIXELS, 
-   createNumber, 
-   ClockNumber, 
-   MatrixWidth, 
-   MatrixHeight 
-} from './clockNumber.ts'
-
-import { 
-   renderDot, 
-   tickDots 
-} from './dotPool.ts'
-
-import { toLog } from './dom.ts'
+   MatrixHeight , MatrixWidth, 
+   DOT_HEIGHT, DOT_WIDTH, 
+   NUMBER_SPACING, PIXELS
+} from './constants.ts'
+import { canvasCTX, initCanvas } from './dom.ts'
+import { createNumber, ClockNumber } from './clockNumber.ts'
+import { renderDot, tickDots } from './dotPool.ts'
 
 /** =====================   Clock Face   =================================
  * 
@@ -37,26 +31,10 @@ import { toLog } from './dom.ts'
 export let width: number
 export let height: number
 
-// a few required clock-face constants
-// these are used to define the shape of
-// our 4 x 7 dot matrix, for the 7-segment 'LED' numbers
-export const NUMBER_SPACING = 16
-export const DOT_WIDTH = 16
-export const DOT_HEIGHT = 16
-
-export let canvas: HTMLCanvasElement
-export let canvasCTX: CanvasRenderingContext2D
-
+// reused variables
 let hSize = 0
 let vSize = 0
 let i
-
-/** A pool of 'untethered' animated dots    
- *  These are the dots that are ejected    
- *  from the static numeric displays when    
- *  the time values change
- */
-let animatedDots: unknown
 
 /** The current horizontal location to render to */
 let currentX = 0
@@ -64,10 +42,13 @@ let currentX = 0
 /** the current vertical location to render to */
 let currentY = 0
 
-/** trails represents a partical trails value */
-let alpha = '0.11' // 0.5 = 0%  0.11 = 50%  0.025 = 100%   
-export const setAlpha = (value: number) => {
-   alpha = toLog(value).toFixed(2);
+/** represents a partical trails value */
+let alpha = '0.11' // 0.5 = 0%  0.11 = 50%  0.025 = 90%   
+export const setAlpha = (position: number) => {
+   const minVal = Math.log(0.5);   // 0% alpha
+   const maxVal = Math.log(0.025); // 90$ alpha
+   const scale = (maxVal - minVal) / 100;
+   alpha = (Math.exp(minVal + scale * position).toFixed(2));
 }
 
 /**
@@ -92,11 +73,14 @@ let seconds: ClockNumber[]
 let colon1X = 0
 let colon2X = 0
 
-
-/** Constructs and initializes a new ClockFace */
-export const buildClockFace = () => {
+/** 
+ * Constructs and initializes a new ClockFace 
+ */
+export function buildClockFace () {
 
    initCanvas()
+   width = canvasCTX.canvas.clientWidth
+   height = canvasCTX.canvas.clientHeight
 
    // init our ClockNumber array objects to empty(default) values
    hours = [createNumber(0, 0), createNumber(0, 0)]
@@ -112,22 +96,8 @@ export const buildClockFace = () => {
    createNumbers()
 
    // start the animation loop (tick method call)
-   window.requestAnimationFrame(tick)
-
+   self.requestAnimationFrame(tick)
 }
-
-const initCanvas = () => {
-   // finally, let's start up the 'clock'
-   canvas = document.getElementById('canvas-content') as HTMLCanvasElement
-   canvasCTX = canvas.getContext('2d') as CanvasRenderingContext2D
-
-   width = canvas.clientWidth
-   height = canvas.clientHeight
-
-   canvas.width = width
-   canvas.height = height
-}
-
 
 /**
  * Main animation loop  ...
@@ -137,7 +107,7 @@ const initCanvas = () => {
  * a transparent fill on the canvas.
  * We would expect ~ 60 frames per second here.
  */
-const tick = (timestamp: number) => {
+function tick (timestamp: number) {
 
    // First, we cover the existing canvas image with a
    // partially-transparent black, effectively dimming all
@@ -176,18 +146,21 @@ const tick = (timestamp: number) => {
    tickDots(timestamp)
 
    // request that we do this again as soon as practical (~60fps)
-   window.requestAnimationFrame(tick)
+   self.requestAnimationFrame(tick)
 }
-
 
 /**
  * Display the current time.
  * Called on each 'tick'
  */
-const updateTime = (now: Date) => {
-   const h = (now.getHours() > 12) ? now.getHours() - 12 : now.getHours();
+function updateTime (now: Date) {
+   let hour = now.getHours()   
+
+   // converts 24 hr to 12 hr time
+   hour = (hour > 12) ? hour - 12 : hour;    
+
    // set the current hours display
-   setDigits(pad2(h), hours)
+   setDigits(pad2(hour, true), hours)
 
    // set the current minutes display
    setDigits(pad2(now.getMinutes()), minutes)
@@ -196,13 +169,14 @@ const updateTime = (now: Date) => {
    setDigits(pad2(now.getSeconds()), seconds)
 }
 
-
 /**
  * Sets the static and active pixels for each of the two numeric displays    
  * SEE: ClockNumber.setPixels()
  */
-const setDigits = (digits: string, numbers: ClockNumber[]) => {
-   numbers[0].drawPixels(PIXELS[parseInt(digits[0])])
+function setDigits (digits: string, numbers: ClockNumber[]) {
+   // if first diget of hour is a blank space, make it a 10
+   const firstNum = (digits[0] === " ") ? 10 : 0
+   numbers[0].drawPixels(PIXELS[firstNum])
    numbers[1].drawPixels(PIXELS[parseInt(digits[1])])
 }
 
@@ -212,7 +186,7 @@ const setDigits = (digits: string, numbers: ClockNumber[]) => {
  *
  * Called only once by the constructor for initialization.
  */
-const createNumbers = () => {
+function createNumbers () {
 
    // first, calculate the width of a numeric display
    //  (16 x 4 + 16) * 6 + (16 + 16) x 2
@@ -255,18 +229,19 @@ const createNumbers = () => {
 /**
  * Initialize the positions of the ClockNumber objects,
  */
-const buildNumber = (digits: ClockNumber[]) => {
+function buildNumber (digits: ClockNumber[]) {
    for (i = 0; i < 2; ++i) {
       digits[i] = createNumber(currentX, currentY)
       currentX += (DOT_WIDTH * MatrixWidth) + NUMBER_SPACING
    }
 }
 
-
 /**
  * Convert a number to a string and add a
  * leading zero to any number less than 10.
  */
-const pad2 = (num: number) => {
-   return (num < 10) ? "0" + num.toString() : num.toString()
+function pad2 (num: number, hr = false) {
+   // if hour, pad the first number as a space; else zero
+   const pad = (hr) ? " " : "0";
+   return (num < 10) ? pad + num.toString() : num.toString()
 }

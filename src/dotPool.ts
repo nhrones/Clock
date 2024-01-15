@@ -1,4 +1,5 @@
-import { canvasCTX, width, height } from './clockFace.ts'
+import { canvasCTX } from './dom.ts'
+import { width, height } from './clockFace.ts'
 
 /** CTX configuration object */
 export const CTX = {
@@ -116,52 +117,55 @@ let newDotBy = 0
 /** A 'fixed' maximum number of dots this pool will contain. */
 const POOL_SIZE = 1000
 
-/**
- * Returns a random velocity value
- * clamped by the value of MaxVelocity
- */
-const randomVelocity = () => {
-   // returns a random value
-   return (Math.random() - 0.4) * CTX.MaxVelocity
-}
 
 // ===============================================================================
-//                                                                               |
-//    Below is a set of fixed size arrays that make up all required              |
-//    properties needed to create a pool of reusable animated dots.              |
-//                                                                               |
-//    These individual property arrays would replace the use of an               |
-//    array of objects:                                                          |
-//                                                                               |
-//    const Dot = {                                                              |
-//       posX: number,                                                           |
-//       posY: number,                                                           |
-//       lastX: number,                                                          |
-//       lastY: number,                                                          |
-//       velocityX: number,                                                      |
-//       velocityY: number                                                       |
-//    }                                                                          |                                                         |
-//                                                                               |  
+// 
+//    Below is a set of fixed size arrays that make up all required 
+//    properties needed to create a pool of reusable animated dots.
+// 
+//    These individual property arrays would replace the use of an  
+//    array of objects: 
+//   
+//    const Dot = {
+//       posX: number,
+//       posY: number,   
+//       lastX: number, 
+//       lastY: number, 
+//       velocityX: number, 
+//       velocityY: number 
+//    }
+// 
 /** An array of horizontal dot position values where zero indicates inactive */
 const posX = Array.from({ length: POOL_SIZE }, () => 0)
+
 /** An array of vertical dot position values */
 const posY = Array.from({ length: POOL_SIZE }, () => 0)
+
 /** An array of last-known horizontal location values where zero indicates inactive */
 const lastX = Array.from({ length: POOL_SIZE }, () => 0)
+
 /** An array of last-known vertical location values */
 const lastY = Array.from({ length: POOL_SIZE }, () => 0)
+
 /** An array of horizontal velocity values, initialized to a random value */
 const velocityX = Array.from({ length: POOL_SIZE }, () => randomVelocity())
+
 /** An array of vertical velocity values, initialized to a random value */
 const velocityY = Array.from({ length: POOL_SIZE }, () => randomVelocity())
-//                                                                               |
-// ==============================================================================
+//                                                                               
+// ==============   end of property arrrays    ==================================
 
 /** Points to the highest index that is currently set active. */
 let tailPointer = 0
 
 /** The last 'tick' time (used for time-delta calculation). */
 let lastTime = Date.now()
+
+// ===================================================
+//
+//                exported functions
+//
+// ===================================================
 
 /**
  * The main entry point for DotPool animations.
@@ -170,12 +174,68 @@ let lastTime = Date.now()
  * tick() in clockFace is triggered by window.requestAnimationFrame().
  * We expect ~ 60 frames per second here.
  */
-export const tickDots = (thisTime: number) => {
+export function tickDots (thisTime: number) {
    delta = (thisTime - lastTime) / 1000
    lastTime = thisTime
    updateDotPositions(delta)
    testForCollisions(delta)
 }
+
+/**
+ * Activates a dot-pool index, to create a new animated dot.
+ * Whenever a time-number change causes one or more
+ * dots to be 'freed' from the number display, we animated
+ * them as if they exploded out of the number display.
+ * We do this by activating the next available index,
+ * setting its position to the position of the freed-dot,
+ * and then assigning a random velocity to it.
+ * If we have activated the array index pointed to by
+ * tailPointer, we increment the tailPointer to maintain
+ * our active pool size.
+ */
+export function activateDot(x: number, y: number) {
+   // loop though the pool to find an unused index
+   // a value of 'zero' for posX is used to indicate 'inactive'
+   for (let idx = 0; idx < tailPointer + 2; idx++) {
+      if (posX[idx] === 0) {
+         // add values for this dots location (this makes it 'active')
+         posX[idx] = x
+         posY[idx] = y
+         lastX[idx] = x
+         lastY[idx] = y
+         velocityX[idx] = randomVelocity()
+         velocityY[idx] = randomVelocity()
+         // if this is past the tail, make this the new tail
+         if (idx > tailPointer) tailPointer = idx
+         // we're all done, break out of this loop
+         break;
+      }
+   }
+}
+
+/**
+ * Here we draw a dot(circle) on the screen (canvas).    
+ * This method is used to create our 'static'    
+ * time-value 'numbers' and 'colons' on the screen.
+ * These are rendered as simple circles.    
+ *     
+ * A similar method, DotPool.renderFreeDot, is used to    
+ * render animated dots using lines instead of circles.    
+ * This will help emulate 'particle-trails'. (SEE: renderFreeDot below)
+ */
+export function renderDot(x: number, y: number, color?: string) {
+   canvasCTX.fillStyle = color || Color
+   canvasCTX.beginPath()
+   canvasCTX.arc(x, y, HalfRadius, 0, 2 * Math.PI, true)
+   canvasCTX.closePath()
+   canvasCTX.fill()
+}
+
+// ===================================================
+//
+//               internal functions
+//
+// ===================================================
 
 /**
  * This method recalculates dot locations and velocities
@@ -326,39 +386,6 @@ function newDistanceSquared(delta: number, a: number, b: number) {
 }
 
 /**
- * Activates a dot-pool index, to create a new animated dot.
- * Whenever a time-number change causes one or more
- * dots to be 'freed' from the number display, we animated
- * them as if they exploded out of the number display.
- * We do this by activating the next available index,
- * setting its position to the position of the freed-dot,
- * and then assigning a random velocity to it.
- * If we have activated the array index pointed to by
- * tailPointer, we increment the tailPointer to maintain
- * our active pool size.
- */
-export function activateDot(x: number, y: number) {
-   // loop though the pool to find an unused index
-   // a value of 'zero' for posX is used to indicate 'inactive'
-   for (let idx = 0; idx < tailPointer + 2; idx++) {
-      if (posX[idx] === 0) {
-         // add values for this dots location (this makes it 'active')
-         posX[idx] = x
-         posY[idx] = y
-         lastX[idx] = x
-         lastY[idx] = y
-         velocityX[idx] = randomVelocity()
-         velocityY[idx] = randomVelocity()
-         // if this is past the tail, make this the new tail
-         if (idx > tailPointer) tailPointer = idx
-         // we're all done, break out of this loop
-         break;
-      }
-   }
-}
-
-
-/**
  * This method renders a track of an animated(free)
  * dot in the dot pool.
  * 
@@ -369,7 +396,7 @@ export function activateDot(x: number, y: number) {
  * faded to black over time, to simulate a particle with a 'com-trail'.
  * SEE: ClockFace.tick() to understand this phenomenon.
  */
-const renderFreeDot = (i: number) => {
+function renderFreeDot (i: number) {
    canvasCTX.beginPath()
    canvasCTX.fillStyle = Color
    canvasCTX.strokeStyle = Color
@@ -383,20 +410,7 @@ const renderFreeDot = (i: number) => {
    lastY[i] = posY[i]
 }
 
-/**
- * Here we draw a dot(circle) on the screen (canvas).    
- * This method is used to create our 'static'    
- * time-value 'numbers' and 'colons' on the screen.
- * These are rendered as simple circles.    
- *     
- * A similar method, DotPool.renderFreeDot, is used to    
- * render animated dots using lines instead of circles.    
- * This will help emulate 'particle-trails'. (SEE: renderFreeDot below)
- */
-export function renderDot(x: number, y: number, color?: string) {
-   canvasCTX.fillStyle = color || Color
-   canvasCTX.beginPath()
-   canvasCTX.arc(x, y, HalfRadius, 0, 2 * Math.PI, true)
-   canvasCTX.closePath()
-   canvasCTX.fill()
+/** Returns a clamped random velocity value */
+function randomVelocity  () {
+  return (Math.random() - 0.4) * CTX.MaxVelocity;
 }
