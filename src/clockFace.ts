@@ -1,11 +1,12 @@
 /// <reference lib="dom" />
 import { 
-   MatrixHeight , MatrixWidth, 
+   MATRIX_HEIGHT , MATRIX_WIDTH, 
    DOT_HEIGHT, DOT_WIDTH, 
    NUMBER_SPACING, PIXELS
 } from './constants.ts'
 import { canvasCTX, initCanvas } from './dom.ts'
-import { createNumber, ClockNumber } from './clockNumber.ts'
+import { createNumber } from './clockNumber.ts' 
+import type { ClockNumber } from './types.ts'
 import { renderDot, tickDots } from './dotPool.ts'
 
 /** =====================   Clock Face   =================================
@@ -190,12 +191,12 @@ function createNumbers () {
 
    // first, calculate the width of a numeric display
    //  (16 x 4 + 16) * 6 + (16 + 16) x 2
-   hSize = ((DOT_WIDTH * MatrixWidth) +
+   hSize = ((DOT_WIDTH * MATRIX_WIDTH) +
       NUMBER_SPACING) * 6 +
       ((DOT_WIDTH + NUMBER_SPACING) * 2) - NUMBER_SPACING
 
    // Now, calculate the height of a numeric display
-   vSize = DOT_HEIGHT * MatrixHeight
+   vSize = DOT_HEIGHT * MATRIX_HEIGHT
 
    // we calculate our initial 'top' value (y)
    currentY = (height - vSize) * 0.33
@@ -232,7 +233,7 @@ function createNumbers () {
 function buildNumber (digits: ClockNumber[]) {
    for (i = 0; i < 2; ++i) {
       digits[i] = createNumber(currentX, currentY)
-      currentX += (DOT_WIDTH * MatrixWidth) + NUMBER_SPACING
+      currentX += (DOT_WIDTH * MATRIX_WIDTH) + NUMBER_SPACING
    }
 }
 

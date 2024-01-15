@@ -8,7 +8,7 @@
       "ServeFolder": "./",
       "Port": 8080,
       "HotPort": 9099,
-      "BuildTarget": "./dist",
+      "BuildTarget": "./",
       "Entry": [
          "./src/main.ts"
       ],

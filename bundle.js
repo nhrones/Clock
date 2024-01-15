@@ -4,8 +4,8 @@
 var NUMBER_SPACING = 16;
 var DOT_WIDTH = 16;
 var DOT_HEIGHT = 16;
-var MatrixWidth = 4;
-var MatrixHeight = 7;
+var MATRIX_WIDTH = 4;
+var MATRIX_HEIGHT = 7;
 var PIXELS = [
   // 'zero'
   [
@@ -314,7 +314,7 @@ function initCanvas() {
   canvas.width = width2;
   canvas.height = height2;
 }
-function init() {
+function initDOM() {
   const gravitySlider = $("gravity");
   const gravityValue = $("gravity-value");
   const bounceSlider = $("bounce");
@@ -347,12 +347,12 @@ function createNumber(x, y) {
   const left = x;
   const top = y;
   let currentPixelMask;
-  const dotLocations = new Array(MatrixHeight);
-  for (let i2 = 0; i2 < MatrixHeight; ++i2) {
-    dotLocations[i2] = new Array(MatrixWidth);
+  const dotLocations = new Array(MATRIX_HEIGHT);
+  for (let i2 = 0; i2 < MATRIX_HEIGHT; ++i2) {
+    dotLocations[i2] = new Array(MATRIX_WIDTH);
   }
-  for (let y2 = 0; y2 < MatrixHeight; ++y2) {
-    for (let x2 = 0; x2 < MatrixWidth; ++x2) {
+  for (let y2 = 0; y2 < MATRIX_HEIGHT; ++y2) {
+    for (let x2 = 0; x2 < MATRIX_WIDTH; ++x2) {
       const xx = left + x2 * DOT_WIDTH;
       const yy = top + y2 * DOT_HEIGHT;
       dotLocations[y2][x2] = {
@@ -365,8 +365,8 @@ function createNumber(x, y) {
     x: left,
     y: top,
     drawPixels: (newPixelMask) => {
-      for (y = 0; y < MatrixHeight; ++y) {
-        for (x = 0; x < MatrixWidth; ++x) {
+      for (y = 0; y < MATRIX_HEIGHT; ++y) {
+        for (x = 0; x < MATRIX_WIDTH; ++x) {
           dot = dotLocations[y][x];
           if (currentPixelMask != null) {
             if (currentPixelMask[y][x] !== 0 && newPixelMask[y][x] === 0) {
@@ -441,8 +441,8 @@ function setDigits(digits, numbers) {
   numbers[1].drawPixels(PIXELS[parseInt(digits[1])]);
 }
 function createNumbers() {
-  hSize = (DOT_WIDTH * MatrixWidth + NUMBER_SPACING) * 6 + (DOT_WIDTH + NUMBER_SPACING) * 2 - NUMBER_SPACING;
-  vSize = DOT_HEIGHT * MatrixHeight;
+  hSize = (DOT_WIDTH * MATRIX_WIDTH + NUMBER_SPACING) * 6 + (DOT_WIDTH + NUMBER_SPACING) * 2 - NUMBER_SPACING;
+  vSize = DOT_HEIGHT * MATRIX_HEIGHT;
   currentY = (height - vSize) * 0.33;
   currentX = (width - hSize) * 0.2;
   buildNumber(hours);
@@ -456,7 +456,7 @@ function createNumbers() {
 function buildNumber(digits) {
   for (i = 0; i < 2; ++i) {
     digits[i] = createNumber(currentX, currentY);
-    currentX += DOT_WIDTH * MatrixWidth + NUMBER_SPACING;
+    currentX += DOT_WIDTH * MATRIX_WIDTH + NUMBER_SPACING;
   }
 }
 function pad2(num, hr = false) {
@@ -465,5 +465,5 @@ function pad2(num, hr = false) {
 }
 
 // src/main.ts
-init();
+initDOM();
 buildClockFace();

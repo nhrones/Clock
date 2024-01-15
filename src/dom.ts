@@ -1,10 +1,14 @@
 /// <reference lib="dom" />
 import { CTX } from './dotPool.ts';
 import { setAlpha } from "./clockFace.ts";
+
+// a utility to save a few keystrokes
 const $ = (id: string) => document.getElementById(id)
+
+/** the applications canvas 2D context */ 
 export let canvasCTX : CanvasRenderingContext2D 
 
-/** initialize the canvas */
+/** initialize the clocks canvas */
 export function initCanvas() {
    const canvas = $('canvas-content') as HTMLCanvasElement
    canvasCTX = canvas.getContext('2d') as CanvasRenderingContext2D
@@ -18,7 +22,7 @@ export function initCanvas() {
 /**
  * initialize DOM elements
  */
-export function init() {
+export function initDOM() {
 
    const gravitySlider = $('gravity') as HTMLInputElement;
    const gravityValue = $('gravity-value') as HTMLInputElement;

@@ -5,8 +5,8 @@
 export const NUMBER_SPACING = 16
 export const DOT_WIDTH = 16
 export const DOT_HEIGHT = 16
-export const MatrixWidth = 4;
-export const MatrixHeight = 7;
+export const MATRIX_WIDTH = 4;
+export const MATRIX_HEIGHT = 7;
 
 /**
  * A lookup array of 10 pixel masks(0-9).

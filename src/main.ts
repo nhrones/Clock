@@ -1,9 +1,9 @@
 /// <reference lib="dom" />
 import { buildClockFace } from './clockFace.ts'
-import * as DomEvents  from './dom.ts'
+import { initDOM }  from './dom.ts'
     
-// setup all DOM event handlers.
-DomEvents.init()
+// initialize all DOM references and event handlers.
+initDOM()
 
-// build -> render -> and animate a `clock`
+// build -> render -> and animate our `dot-clock`
 buildClockFace()
