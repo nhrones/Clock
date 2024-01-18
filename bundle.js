@@ -159,12 +159,20 @@ var newDotAy = 0;
 var newDotBx = 0;
 var newDotBy = 0;
 var POOL_SIZE = 1e3;
-var posX = Array.from({ length: POOL_SIZE }, () => 0);
-var posY = Array.from({ length: POOL_SIZE }, () => 0);
-var lastX = Array.from({ length: POOL_SIZE }, () => 0);
-var lastY = Array.from({ length: POOL_SIZE }, () => 0);
-var velocityX = Array.from({ length: POOL_SIZE }, () => randomVelocity());
-var velocityY = Array.from({ length: POOL_SIZE }, () => randomVelocity());
+var posX = [];
+var posY = [];
+var lastX = [];
+var lastY = [];
+var velocityX = [];
+var velocityY = [];
+for (let i2 = 0; i2 < POOL_SIZE; i2++) {
+  posX[i2] = 0;
+  posY[i2] = 0;
+  lastX[i2] = 0;
+  lastY[i2] = 0;
+  velocityX[i2] = 0;
+  velocityY[i2] = 0;
+}
 var tailPointer = 0;
 var lastTime = Date.now();
 function tickDots(thisTime) {

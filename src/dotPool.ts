@@ -135,23 +135,29 @@ const POOL_SIZE = 1000
 //       velocityY: number 
 //    }
 // 
-/** An array of horizontal dot position values where zero indicates inactive */
-const posX = Array.from({ length: POOL_SIZE }, () => 0)
-
+/** An array of horizontal dot position values 
+ * where zero indicates inactive */
+const posX: number[] = []
 /** An array of vertical dot position values */
-const posY = Array.from({ length: POOL_SIZE }, () => 0)
-
-/** An array of last-known horizontal location values where zero indicates inactive */
-const lastX = Array.from({ length: POOL_SIZE }, () => 0)
-
+const posY: number[] = []
+/** An array of last-known horizontal location values */
+const lastX: number[] = [] 
 /** An array of last-known vertical location values */
-const lastY = Array.from({ length: POOL_SIZE }, () => 0)
+const lastY: number[] = [] 
+/** An array of horizontal velocity values */
+const velocityX: number[] = [] 
+/** An array of vertical velocity values */
+const velocityY: number[] = []
 
-/** An array of horizontal velocity values, initialized to a random value */
-const velocityX = Array.from({ length: POOL_SIZE }, () => randomVelocity())
-
-/** An array of vertical velocity values, initialized to a random value */
-const velocityY = Array.from({ length: POOL_SIZE }, () => randomVelocity())
+// populate array set
+for (let i = 0; i <  POOL_SIZE; i++) {
+   posX[i] = 0;
+   posY[i] = 0;
+   lastX[i] = 0;
+   lastY[i] = 0;
+   velocityX[i] = 0;
+   velocityY[i] = 0;
+}
 //                                                                               
 // ==============   end of property arrrays    ==================================
 
