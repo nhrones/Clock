@@ -115,7 +115,7 @@ let newDotBy = 0
  */
 
 /** A 'fixed' maximum number of dots this pool will contain. */
-const POOL_SIZE = 1000
+const POOL_SIZE = 10000
 
 
 // ===============================================================================
@@ -134,20 +134,20 @@ const POOL_SIZE = 1000
 //       velocityX: number, 
 //       velocityY: number 
 //    }
-// 
+//
 /** An array of horizontal dot position values 
  * where zero indicates inactive */
-const posX: number[] = []
+const posX: number[] = Array(POOL_SIZE)
 /** An array of vertical dot position values */
-const posY: number[] = []
+const posY: number[] = Array(POOL_SIZE)
 /** An array of last-known horizontal location values */
-const lastX: number[] = [] 
+const lastX: number[] = Array(POOL_SIZE) 
 /** An array of last-known vertical location values */
-const lastY: number[] = [] 
+const lastY: number[] = Array(POOL_SIZE) 
 /** An array of horizontal velocity values */
-const velocityX: number[] = [] 
+const velocityX: number[] = Array(POOL_SIZE) 
 /** An array of vertical velocity values */
-const velocityY: number[] = []
+const velocityY: number[] = Array(POOL_SIZE)
 
 // populate array set
 for (let i = 0; i <  POOL_SIZE; i++) {
