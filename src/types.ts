@@ -1,6 +1,6 @@
 
 /**
- * This class creates an array of physical locations
+ * This type creates an array of physical locations
  * that will be used as a 4 x 7 dot matrix.
  * This array will be manipulted to represent a
  * seven segment numeric display.

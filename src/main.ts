@@ -1,7 +1,7 @@
 /// <reference lib="dom" />
 import { buildClockFace } from './clockFace.ts'
 import { initDOM }  from './dom.ts'
-    
+     
 // initialize all DOM references and event handlers.
 initDOM()
 
