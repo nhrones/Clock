@@ -7,9 +7,9 @@
          "command": "serve"
       },
       {
-         "label": "HOT",
+         "label": "BUILD",
          "type": "shell",
-         "command": "hot"
+         "command": "build"
       }
    ]
 }
