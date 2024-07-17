@@ -7,6 +7,9 @@ import {
 } from './constants.ts'
 import { renderDot, activateDot } from './dotPool.ts'
 
+/**
+ * A reusable object for reduction of GC pressure
+ */
 let dot = { x: 0, y: 0 }
 
 /**

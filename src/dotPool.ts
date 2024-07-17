@@ -1,66 +1,14 @@
+import { 
+   CTX,
+   Radius,
+   HalfRadius,
+   Radius_Sqrd,
+   Color,
+} from "./constants.ts"
 import { canvasCTX } from './dom.ts'
 import { width, height } from './clockFace.ts'
 
-/** CTX configuration object */
-export const CTX = {
-   /** 
-    * A false gravitational pull in the X direction    
-    * (positive = right and negative = left)   
-    * default = 0
-    */
-   GravityX: 0,
-
-   /** 
-    * A gravitational pull in the positive Y direction(down to floor)     
-    * Have some fun! ... try a negative value
-    * default = 1600
-    */
-   GravityY: 750,
-
-   /**
-    * The coefficient of restitution (COR) is the ratio     
-    * of the final to initial relative velocity between     
-    * two objects after they collide.    
-    * 
-    * This represents the amount of 'bounce' a dot will exibit.    
-    * 1.0 = full rebound, and 0.5 will rebound only    
-    * half as high as the distance fallen.    
-    * default = 0.8
-    */
-   Restitution: 0.5,
-
-   /** 
-    * The Maximum Velocity that a dot may take when it recieves a random velocity.     
-    * default = 2400
-    */
-   MaxVelocity: 750
-}
-
-/** 
- * The radius of dots   
- * default = 14px
- */
-const Radius = 14
-
-/**
- * Half the Radius. Used in the rendering calculation of arcs(circles).    
- * We pre-calculated this value to prevent the cost of calculations in loops.    
- */
-const HalfRadius = Radius * 0.5
-
-/**
- * Radius Squared is used in the calculation of distances between dots.    
- * We pre-calculated this value to prevent the cost of calculations in loops.    
- * default = 14 * 14
- */
-const Radius_Sqrd = Radius * Radius
-
-/** 
- * Our default dot color (blue)     
- */
-const Color = '#44f'
-
-// reusable values
+// reused variables to reduce GC
 let distanceX = 0
 let distanceY = 0
 let delta = 0
@@ -115,8 +63,18 @@ let newDotBy = 0
  */
 
 /** A 'fixed' maximum number of dots this pool will contain. */
-const POOL_SIZE = 10000
+const POOL_SIZE = 1000
 
+//TODO Place all values below in a single array.
+// Then, use offsets (pointers) to index into individual values.
+/*
+   0 = X
+   1 = Y  
+   2 = LAST_X
+   3 = LAST_Y 
+   4 = VELOCITY_X 
+   5 = VELOCITY_Y
+*/
 
 // ===============================================================================
 // 
@@ -134,18 +92,24 @@ const POOL_SIZE = 10000
 //       velocityX: number, 
 //       velocityY: number 
 //    }
-//
+
+
 /** An array of horizontal dot position values 
  * where zero indicates inactive */
 const posX: number[] = Array(POOL_SIZE)
+
 /** An array of vertical dot position values */
 const posY: number[] = Array(POOL_SIZE)
+
 /** An array of last-known horizontal location values */
 const lastX: number[] = Array(POOL_SIZE) 
+
 /** An array of last-known vertical location values */
-const lastY: number[] = Array(POOL_SIZE) 
+const lastY: number[] = Array(POOL_SIZE)
+
 /** An array of horizontal velocity values */
-const velocityX: number[] = Array(POOL_SIZE) 
+const velocityX: number[] = Array(POOL_SIZE)
+
 /** An array of vertical velocity values */
 const velocityY: number[] = Array(POOL_SIZE)
 
@@ -158,7 +122,7 @@ for (let i = 0; i <  POOL_SIZE; i++) {
    velocityX[i] = 0;
    velocityY[i] = 0;
 }
-//                                                                               
+
 // ==============   end of property arrrays    ==================================
 
 /** Points to the highest index that is currently set active. */

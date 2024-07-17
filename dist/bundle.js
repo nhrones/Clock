@@ -1,5 +1,15 @@
 //@ts-nocheck
 
+//@ts-nocheck
+
+//@ts-nocheck
+
+//@ts-nocheck
+
+//@ts-nocheck
+
+//@ts-nocheck
+
 // src/constants.ts
 var NUMBER_SPACING = 16;
 var DOT_WIDTH = 16;
