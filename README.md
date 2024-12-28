@@ -21,5 +21,22 @@ This app was built using my <a href="https://github.com/nhrones/Hot">**_Hot_**</
 ## Run Online
 https://nhrones.github.io/Clock/
 
-## Copy Repo to use/learn Hot dev server
-In a local copy, open vscode terminal and 
+# HOT
+This is a HOT app
+
+## Copy this Repo to use/learn about the Hot dev server
+  - Download and load a local copy in vsCode.
+  - To run Hot, press ctrl+shift+b  (vscode build shortcut)
+  - This will start the Hot-dev-server from JSR
+  - To see how this is configured, open ./.vscode/tasks.json
+
+  This app is configured to code and build all front-end code from typescript files located in the /src/ folder.    
+  These ts files are transpiled and bundled to a single ./dist/bundle.js file.   
+  The ./index.html file loads this javascript bundle.js and a css file from the /dist/ folder:   
+  ```
+     <link rel="stylesheet" href="./dist/styles.css" />
+     <script type="module" src="./dist/bundle.js"></script>
+  ```
+Any changes to any ts file in the /src/ folder will cause a build/bundle/refresh of the browser.
+Any changes to any css file in the /dist/ folder will cause a refresh of the browser.
+
