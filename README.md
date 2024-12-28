@@ -39,3 +39,12 @@ The contents in the **/src/** folder have been bundled into the **_./dist/bundle
 Any changes to any ts file in the /src/ folder will cause a build/bundle/refresh of the browser.   
 Any changes to any css file in the /dist/ folder will cause a refresh of just the styles in the browser.   
 
+Unlike Vite or Deno serve, This simple dev-server requires:
+  * no deno.json 
+  * no package.json 
+  * no /node_modules/
+  * no frameworks
+
+HOT is a tool to support the developement of pure HTML, CSS, vannilla javascript apps.   
+
+The unique thing about HOT is, like with Vite, you code directly in Typescript, but without all the node overhead of Vite.   
