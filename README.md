@@ -36,6 +36,6 @@ The contents in the **/src/** folder have been bundled into the **_./dist/bundle
      <link rel="stylesheet" href="./dist/styles.css" />
      <script type="module" src="./dist/bundle.js"></script>
   ```
-Any changes to any ts file in the /src/ folder will cause a build/bundle/refresh of the browser.
-Any changes to any css file in the /dist/ folder will cause a refresh of just the styles in the browser.
+Any changes to any ts file in the /src/ folder will cause a build/bundle/refresh of the browser.   
+Any changes to any css file in the /dist/ folder will cause a refresh of just the styles in the browser.   
 
