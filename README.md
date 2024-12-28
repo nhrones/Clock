@@ -47,6 +47,6 @@ Unlike Vite or Deno serve, This simple dev-server requires:
   * no /node_modules/
   * no frameworks
 
-HOT is a tool to support the developement of pure HTML, CSS, vannilla javascript apps.   
+HOT is a tool to support the developement of pure HTML, CSS, vanilla javascript apps. It assumes no framework is required, while allowing client-side code to take enjoy the advantages of Typescript.   
 
 The unique thing about HOT is, like with Vite, you code directly in Typescript, but without all the node overhead of Vite.   
