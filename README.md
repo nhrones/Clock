@@ -20,3 +20,6 @@ This app was built using my <a href="https://github.com/nhrones/Hot">**_Hot_**</
 
 ## Run Online
 https://nhrones.github.io/Clock/
+
+## Copy Repo to use/learn Hot dev server
+In a local copy, open vscode terminal and 
