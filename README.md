@@ -15,22 +15,22 @@ The interesting bits of this exercise was the use of a resource-pool to improve 
 Below the clock are four slider controls. Try moving each slider to change the animation.    
 The **_partical-trails_** slider is most interesting. It controls the RGBA alpha channel to gradually fade out trails. The higher the slider value, the less trail fade.   
 
-## Note:
-This app was built using my <a href="https://github.com/nhrones/Hot">**_Hot_**</a> dev server.  The contents in the **/src/** folder have been bundled into the **_./bundle.js_** file.  
-
 ## Run Online
 https://nhrones.github.io/Clock/
 
 # HOT
-This simple app demonstrates running Hot-dev-server directly from JSR (see: ./vscode/tasks.json - HOT)
+This simple app demonstrates running my Hot-dev-server directly from JSR.   
+This app was built using my <a href="https://github.com/nhrones/Devtools_Hot">**_Hot_**</a> dev server.   
+The contents in the **/src/** folder have been bundled into the **_./dist/bundle.js_** file.  
 
 ## Copy this Repo to use/learn about the Hot dev server
   - Download and load a local copy in vsCode.
-  - To run Hot, press ctrl+shift+b  (the vscode build shortcut)
+  - To run Hot, press **_ctrl+shift+b_**  (the vscode build shortcut)
   - This will start the Hot-dev-server from JSR
-  - To see how this is configured, open ./.vscode/tasks.json
+  - To see how this is configured, open the ./.vscode/tasks.json file and see HOT
 
-  This app is configured to code and build all front-end javascript from typescript files located in the /src/ folder. These ts files are auto-transpiled and bundled on-change to a single ./dist/bundle.js file.   
+  This app is configured to code and build all front-end javascript from typescript files located in the /src/ folder.   
+  These **ts** files are auto-transpiled and bundled on-change to a single ./dist/bundle.js file.   
   The _index.html_ file in the root folder loads this javascript bundle.js and a css file from the /dist/ folder:   
   ```
      <link rel="stylesheet" href="./dist/styles.css" />
