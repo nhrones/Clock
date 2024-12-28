@@ -31,11 +31,13 @@ The contents in the **/src/** folder have been bundled into the **_./dist/bundle
 
   This app is configured to code and build all front-end javascript from typescript files located in the /src/ folder.   
   These **ts** files are auto-transpiled and bundled on-change to a single ./dist/bundle.js file.   
-  The _index.html_ file in the root folder loads this javascript bundle.js and a css file from the /dist/ folder: (keeping index.html in the root, allows us to run this from Github-Pages)  
+  The _index.html_ file in the root folder loads this javascript bundle.js and a css file from the /dist/ folder:   
   ```
      <link rel="stylesheet" href="./dist/styles.css" />
      <script type="module" src="./dist/bundle.js"></script>
   ```
+Note: keeping index.html in the root, allows us to run this from Github-Pages   
+
 Any changes to any ts file in the /src/ folder will cause a build/bundle/refresh of the browser.   
 Any changes to any css file in the /dist/ folder will cause a refresh of just the styles in the browser.   
 
