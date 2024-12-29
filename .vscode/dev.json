@@ -1,18 +1,4 @@
 {
-   "simple": {
-      "DEV": true,
-      "Port": 80,
-      "Serve": ""
-   },
-   "Build": {
-      "DEV": true,
-      "Entry": [
-         "./src/main.ts"
-      ],
-      "Minify": false,
-      "Out": "dist",
-      "BundleName": "bundle"
-   },
    "hot": {
       "BundleName": "bundle.js",
       "DEV": true,
@@ -28,5 +14,20 @@
          "src",
          "dist"
       ]
+   },
+   "simple": {
+      "Serve": "",
+      "Port": 80,
+      "DEV": true,
+      "HtmlName": "index.html"
+   },
+   "build": {
+      "BundleName": "bundle.js",
+      "Entry": [
+         "./src/main.ts"
+      ],
+      "Minify": false,
+      "Bundle": true,
+      "OutPath": "dist"
    }
 }
