@@ -1,5 +1,5 @@
 /// <reference lib="dom" />
-import { CTX } from './dotPool.ts';
+import { CTX } from './constants.ts';
 import { setAlpha } from "./clockFace.ts";
 
 // a utility to save a few keystrokes
