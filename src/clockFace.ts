@@ -172,7 +172,9 @@ function updateTime (now: Date) {
  * SEE: ClockNumber.setPixels()
  */
 function setDigits (digits: string, numbers: ClockNumber[]) {
+   // @ts-ignore
    numbers[0].drawPixels(PIXELS[parseInt(digits[0])])
+   // @ts-ignore
    numbers[1].drawPixels(PIXELS[parseInt(digits[1])])
 }
 

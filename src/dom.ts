@@ -1,4 +1,5 @@
-/// <reference lib="dom" />
+///// <reference lib="dom" />
+
 import { CTX } from './constants.ts';
 import { setAlpha } from "./clockFace.ts";
 

@@ -239,7 +239,7 @@ function updateDotPositions(delta: number) {
                tailPointer--
             }
             continue
-            // it was'nt on the floor so ... boune it off the wall
+            // it was'nt on the floor so ... bounce it off the wall
          } else {
             if (posX[i] <= Radius) { posX[i] = Radius }
             if (posX[i] >= (width)) { posX[i] = width }
