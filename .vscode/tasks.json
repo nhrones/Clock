@@ -4,12 +4,12 @@
       {
          "label": "RUN",
          "type": "shell",
-         "command": "deno run --allow-all https://jsr.io/@ndh/simple/1.0.1/mod.ts"
+         "command": "deno run --allow-all --no-config https://jsr.io/@ndh/simple/1.0.1/mod.ts"
       },
       {
          "label": "BUILD",
          "type": "shell",
-         "command": "deno run --allow-all https://jsr.io/@ndh/build/1.0.6/mod.ts"
+         "command": "deno run --allow-all --no-config https://jsr.io/@ndh/build/1.0.6/mod.ts"
       },
       {
          "label": "HOT",
