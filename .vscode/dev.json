@@ -15,7 +15,7 @@
          "dist"
       ]
    },
-   "build": {
+   "BUILD": {
       "BundleName": "bundle.js",
       "Entry": [
          "./src/main.ts"
