@@ -1,5 +1,5 @@
 {
-   "hot": {
+   "HOT": {
       "BundleName": "bundle.js",
       "DEV": true,
       "Entry": [
@@ -15,12 +15,6 @@
          "dist"
       ]
    },
-   "simple": {
-      "Serve": "",
-      "Port": 80,
-      "DEV": true,
-      "HtmlName": "index.html"
-   },
    "build": {
       "BundleName": "bundle.js",
       "Entry": [
@@ -29,5 +23,11 @@
       "Minify": false,
       "Bundle": true,
       "OutPath": "dist"
+   },
+   "RUN": {
+      "Serve": "",
+      "Port": 80,
+      "DEV": true,
+      "HtmlName": "index.html"
    }
 }

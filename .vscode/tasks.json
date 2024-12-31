@@ -1,25 +1,22 @@
 {
+   // See https://go.microsoft.com/fwlink/?LinkId=733558
+   // for the documentation about the tasks.json format
    "version": "2.0.0",
    "tasks": [
-      {
-         "label": "RUN",
-         "type": "shell",
-         "command": "deno run --allow-all --no-config https://jsr.io/@ndh/simple/1.0.1/mod.ts"
-      },
-      {
-         "label": "BUILD",
-         "type": "shell",
-         "command": "deno run --allow-all --no-config https://jsr.io/@ndh/build/1.0.6/mod.ts"
-      },
-      {
-         "label": "HOT",
-         "type": "shell",
-         "command": "deno run --allow-all --no-config https://jsr.io/@ndh/hot/1.0.8/server.ts .",
-         "problemMatcher": [],
-         "group": {
-            "kind": "build",
-            "isDefault": true
-         }
+   {
+      "label": "HOT",
+      "type": "shell",
+      "command": "deno run --allow-all --no-config https://jsr.io/@ndh/hot/1.0.20/server.ts",
+      "problemMatcher": [],
+      "group": {
+         "kind": "build",
+         "isDefault": true
       }
-   ]
-}
+   },
+   {
+      "label": "RUN",
+      "type": "shell",
+      "command": "deno run --allow-all --no-config https://jsr.io/@ndh/simple/1.0.9/mod.ts"
+   }
+]       
+   }
