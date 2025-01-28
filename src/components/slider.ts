@@ -1,4 +1,6 @@
 
+const Cap = (w: string) => w.charAt(0).toUpperCase() + w.slice(1)
+
 const template = document.createElement("template")
 template.innerHTML = `
 <style>
@@ -62,30 +64,33 @@ label {
 </style>
 
 <div>
-   <label id="lbl" for="ss">Gravity: 50%</label>
+   <label id="label" for="ss"></label>
 </div>
 
 <div>
-   <input id="ss" class="slider" type="range" min="1" max="100" step="1" value="50" />
+   <input id="slider" class="slider" type="range" min="1" max="100" step="1" value="50" />
 </div>
 `;
 
 /** SuperSlider Web Component*/
 export class SuperSlider extends HTMLElement {
+   // The name of this slider -- from its id 
    valueName: string
    label: HTMLLabelElement
    slider: HTMLInputElement
    unit: string
    constructor() {
       super();
+      // do the shadow
       const shadowRoot = this.attachShadow({ mode: "closed" })
       let clone = template.content.cloneNode(true)
       shadowRoot.append(clone)
-      console.info(shadowRoot)
-      this.slider = shadowRoot.getElementById("ss") as HTMLInputElement;
-      this.label = shadowRoot.getElementById("lbl") as HTMLLabelElement;
+      // grab a reference to the elements
+      this.slider = shadowRoot.getElementById("slider") as HTMLInputElement;
+      this.label = shadowRoot.getElementById("label") as HTMLLabelElement;
+      // extract the attributes from the HTML-Tag
       this.unit = this.getAttribute('unit') as string;
-      this.valueName = this.getAttribute('id') as string;
+      this.valueName = Cap(this.getAttribute('id') as string);
    }
 
    connectedCallback() {
@@ -93,8 +98,8 @@ export class SuperSlider extends HTMLElement {
 
       this.slider.addEventListener("input", (e) => {
          e.stopPropagation(); //stops bubbling up
-         this.label.textContent = `${this.valueName}: ${this.slider.value}%`; 
-         let ev = new InputEvent("change",{data: this.slider.value})
+         this.label.textContent = `${this.valueName}: ${this.slider.value}%`;
+         let ev = new InputEvent("change", { data: this.slider.value })
          this.dispatchEvent(ev);
       });
 
@@ -112,5 +117,6 @@ export class SuperSlider extends HTMLElement {
       this.slider.after(resetter);
    }
 }
+
 
 customElements.define("super-slider", SuperSlider); 

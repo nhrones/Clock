@@ -21,22 +21,22 @@ export function initCanvas() {
 export function initDOM() {
 
    /** Gravity */
-   $('Gravity')!.addEventListener('change', (ev: any) => {
+   $('gravity')!.addEventListener('change', (ev: any) => {
       CTX.GravityY = (parseInt(ev.data) * 50) | 0
    });
 
    /** Bounce == coefficient of restitution (COR) */
-   $('Bounce')!.addEventListener('change', (ev: any) => {
+   $('bounce')!.addEventListener('change', (ev: any) => {
       CTX.Restitution = parseInt(ev.data) * .01
    });
 
    /** Velocity */
-   $('Velocity')!.addEventListener('change', (ev: any) => {
+   $('velocity')!.addEventListener('change', (ev: any) => {
       CTX.MaxVelocity = (parseInt(ev.data) * 50) | 0
    });
 
    /** Partical trails */
-   $('Trail')!.addEventListener('change', (ev: any) => {
+   $('trail')!.addEventListener('change', (ev: any) => {
       setAlpha(parseInt(ev.data));
    });
 }

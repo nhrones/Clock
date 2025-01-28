@@ -3,6 +3,7 @@ var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
 // src/components/slider.ts
+var Cap = /* @__PURE__ */ __name((w) => w.charAt(0).toUpperCase() + w.slice(1), "Cap");
 var template = document.createElement("template");
 template.innerHTML = `
 <style>
@@ -66,17 +67,18 @@ label {
 </style>
 
 <div>
-   <label id="lbl" for="ss">Gravity: 50%</label>
+   <label id="label" for="ss"></label>
 </div>
 
 <div>
-   <input id="ss" class="slider" type="range" min="1" max="100" step="1" value="50" />
+   <input id="slider" class="slider" type="range" min="1" max="100" step="1" value="50" />
 </div>
 `;
 var SuperSlider = class extends HTMLElement {
   static {
     __name(this, "SuperSlider");
   }
+  // The name of this slider -- from its id 
   valueName;
   label;
   slider;
@@ -86,11 +88,10 @@ var SuperSlider = class extends HTMLElement {
     const shadowRoot = this.attachShadow({ mode: "closed" });
     let clone = template.content.cloneNode(true);
     shadowRoot.append(clone);
-    console.info(shadowRoot);
-    this.slider = shadowRoot.getElementById("ss");
-    this.label = shadowRoot.getElementById("lbl");
+    this.slider = shadowRoot.getElementById("slider");
+    this.label = shadowRoot.getElementById("label");
     this.unit = this.getAttribute("unit");
-    this.valueName = this.getAttribute("id");
+    this.valueName = Cap(this.getAttribute("id"));
   }
   connectedCallback() {
     this.label.textContent = `${this.valueName}: ${this.slider.value}%`;
@@ -271,16 +272,16 @@ function initCanvas() {
 }
 __name(initCanvas, "initCanvas");
 function initDOM() {
-  $("Gravity").addEventListener("change", (ev) => {
+  $("gravity").addEventListener("change", (ev) => {
     CTX.GravityY = parseInt(ev.data) * 50 | 0;
   });
-  $("Bounce").addEventListener("change", (ev) => {
+  $("bounce").addEventListener("change", (ev) => {
     CTX.Restitution = parseInt(ev.data) * 0.01;
   });
-  $("Velocity").addEventListener("change", (ev) => {
+  $("velocity").addEventListener("change", (ev) => {
     CTX.MaxVelocity = parseInt(ev.data) * 50 | 0;
   });
-  $("Trail").addEventListener("change", (ev) => {
+  $("trail").addEventListener("change", (ev) => {
     setAlpha(parseInt(ev.data));
   });
 }
