@@ -1,11 +1,11 @@
 import { CTX } from './constants.ts';
 import { setAlpha } from "./clockFace.ts";
 
-// a utility to save a few keystrokes
+/** a utility to save a few keystrokes */ 
 const $ = (id: string) => document.getElementById(id)
 
-/** the applications canvas 2D context */ 
-export let canvasCTX : CanvasRenderingContext2D 
+/** the applications canvas 2D context */
+export let canvasCTX: CanvasRenderingContext2D
 
 /** initialize the clocks canvas */
 export function initCanvas() {
@@ -17,42 +17,26 @@ export function initCanvas() {
    canvas.height = height
 }
 
-
-/**
- * initialize DOM elements
- */
+/** initialize DOM elements */
 export function initDOM() {
 
-   const gravitySlider = $('gravity') as HTMLInputElement;
-   const gravityValue = $('gravity-value') as HTMLInputElement;
-   const bounceSlider = $('bounce') as HTMLInputElement;
-   const bounceValue = $('bounce-value') as HTMLAnchorElement
-   const velocitySlider = $('velocity') as HTMLInputElement;
-   const velocityValue = $('velocity-value') as HTMLInputElement;
-   const trailsSlider = $('trails-slider') as HTMLInputElement;
-   const trailsValue = $('trails-value') as HTMLInputElement;
-  
-   // gravity
-   gravitySlider.oninput = () => {
-      gravityValue.innerHTML = `    Gravity: ${gravitySlider.value}%`;
-      CTX.GravityY = (parseInt(gravitySlider.value) * 50) | 0
-   }
+   /** Gravity */
+   $('Gravity')!.addEventListener('change', (ev: any) => {
+      CTX.GravityY = (parseInt(ev.data) * 50) | 0
+   });
 
-   // coefficient of restitution (COR) -- bounce
-   bounceSlider.oninput = () => {
-      bounceValue.innerHTML = `    COR Restitution:   ${bounceSlider.value}%`;
-      CTX.Restitution = parseInt(bounceSlider.value) * .01
-   }
+   /** Bounce == coefficient of restitution (COR) */
+   $('Bounce')!.addEventListener('change', (ev: any) => {
+      CTX.Restitution = parseInt(ev.data) * .01
+   });
 
-   // velocity
-   velocitySlider.oninput = () => {
-      velocityValue.innerHTML = `    Velocity:  ${velocitySlider.value}%`;
-      CTX.MaxVelocity = (parseInt(velocitySlider.value) * 50) | 0
-   }
+   /** Velocity */
+   $('Velocity')!.addEventListener('change', (ev: any) => {
+      CTX.MaxVelocity = (parseInt(ev.data) * 50) | 0
+   });
 
-   // partical trails -- 
-   trailsSlider.oninput = () => {
-      trailsValue.innerHTML = `    Partical-Trails:  ${trailsSlider.value}%`;
-      setAlpha(parseInt(trailsSlider.value));
-   }
+   /** Partical trails */
+   $('Trail')!.addEventListener('change', (ev: any) => {
+      setAlpha(parseInt(ev.data));
+   });
 }

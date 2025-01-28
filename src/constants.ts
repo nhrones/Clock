@@ -72,7 +72,7 @@ export const Radius_Sqrd = Radius * Radius
 /** 
  * Our default dot color (blue)     
  */
-export const Color = '#44f'
+export const Color = "cornflowerblue";
 
 
 /**

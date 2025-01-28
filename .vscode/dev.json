@@ -1,28 +1,12 @@
 {
-   "HOT": {
-      "BundleName": "bundle.js",
-      "DEV": true,
-      "Entry": [
-         "./src/main.ts"
-      ],
-      "Minify": false,
-      "OutPath": "dist",
-      "Port": 80,
-      "Serve": ".",
-      "HtmlName": "index.html",
-      "Watch": [
-         "src",
-         "dist"
-      ]
-   },
    "BUILD": {
       "BundleName": "bundle.js",
       "Entry": [
          "./src/main.ts"
       ],
       "Minify": false,
-      "Bundle": true,
-      "OutPath": "dist"
+      "OutPath": "dist",
+      "Serve": ""
    },
    "RUN": {
       "Serve": "",

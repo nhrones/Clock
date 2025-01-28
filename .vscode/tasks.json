@@ -3,20 +3,15 @@
    // for the documentation about the tasks.json format
    "version": "2.0.0",
    "tasks": [
-   {
-      "label": "HOT",
-      "type": "shell",
-      "command": "deno run --allow-all --no-config https://jsr.io/@ndh/hot/1.1.3/server.ts",
-      "problemMatcher": [],
-      "group": {
-         "kind": "build",
-         "isDefault": true
+      {
+         "label": "BUILD",
+         "type": "shell",
+         "command": "build"
+      },
+      {
+         "label": "RUN",
+         "type": "shell",
+         "command": "serve"
       }
-   },
-   {
-      "label": "RUN",
-      "type": "shell",
-      "command": "deno run --allow-all --no-config https://jsr.io/@ndh/simple/1.1.4/mod.ts"
-   }
-]       
-   }
+   ]
+}
