@@ -112,3 +112,5 @@ export class SuperSlider extends HTMLElement {
       this.slider.after(resetter);
    }
 }
+
+customElements.define("super-slider", SuperSlider); 

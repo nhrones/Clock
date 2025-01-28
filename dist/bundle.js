@@ -113,6 +113,7 @@ var SuperSlider = class extends HTMLElement {
     this.slider.after(resetter);
   }
 };
+customElements.define("super-slider", SuperSlider);
 
 // src/constants.ts
 var NUMBER_SPACING = 16;
@@ -579,6 +580,5 @@ function pad2(num) {
 __name(pad2, "pad2");
 
 // src/main.ts
-customElements.define("super-slider", SuperSlider);
 initDOM();
 buildClockFace();
