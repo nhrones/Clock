@@ -36,7 +36,7 @@ export function initDOM() {
    });
 
    /** Partical trails */
-   $('trail')!.addEventListener('change', (ev: any) => {
+   $('trails')!.addEventListener('change', (ev: any) => {
       setAlpha(parseInt(ev.data));
    });
 }

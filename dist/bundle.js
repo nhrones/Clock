@@ -6,73 +6,9 @@ var __name = (target, value) => __defProp(target, "name", { value, configurable:
 var Cap = /* @__PURE__ */ __name((w) => w.charAt(0).toUpperCase() + w.slice(1), "Cap");
 var template = document.createElement("template");
 template.innerHTML = `
-<style>
-
-/* for the shadowRoot only */
-:host {
-   margin-top:10px;
-   background-color: #000;
-   color: cornflowerblue;
-   text-align: center;
-}  
-
-button {
-   background-color: #000;
-   color: cornflowerblue;
-   border: 2px solid cornflowerblue;
-}
-
-label {
-   color: cornflowerblue;
-   margin: 10px;
-   font-family: helvetica;
-   font-size: 18px;
-   font-style: italic;
-   letter-spacing: 2px;
- }
- 
- .slider {
-   appearance: none; 
-   width: 20%;
-   height: 10px;
-   background: #000;
-   outline: none;
-   border: 2px solid cornflowerblue;
-   border-radius: 4px;
- }
- 
- 
- /* for chrome/safari */
- .slider::-webkit-slider-thumb {
-   -webkit-appearance: none;
-   appearance: none;
-   width: 25px;
-   height: 20px;
-   background: rgb(169, 169, 243);
-   cursor: pointer;
-   border: 5px solid cornflowerblue;
-   border-radius: 4px;
- }
- 
- /* for firefox */
- .slider::-moz-range-thumb {
-   width: 20px;
-   height: 60px;
-   background: #000;
-   cursor: pointer;
-   border: 5px solid #44f;
-   border-radius: 4px;
- }
-
-</style>
-
-<div>
-   <label id="label" for="ss"></label>
-</div>
-
-<div>
-   <input id="slider" class="slider" type="range" min="1" max="100" step="1" value="50" />
-</div>
+<link rel="stylesheet" href="/src/components/slider.css">
+<div> <label id="label" for="slider"></label> </div>
+<div> <input id="slider" class="slider" type="range" min="1" max="100" step="1" value="50" /> </div>
 `;
 var SuperSlider = class extends HTMLElement {
   static {
@@ -281,7 +217,7 @@ function initDOM() {
   $("velocity").addEventListener("change", (ev) => {
     CTX.MaxVelocity = parseInt(ev.data) * 50 | 0;
   });
-  $("trail").addEventListener("change", (ev) => {
+  $("trails").addEventListener("change", (ev) => {
     setAlpha(parseInt(ev.data));
   });
 }
