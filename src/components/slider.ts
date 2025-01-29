@@ -1,6 +1,6 @@
 
 const Cap = (w: string) => w.charAt(0).toUpperCase() + w.slice(1)
-
+const A = "A"
 const template = document.createElement("template")
 template.innerHTML = `
 <link rel="stylesheet" href="/src/components/slider.css">
