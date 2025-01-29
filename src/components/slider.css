@@ -26,7 +26,7 @@ label {
    appearance: none; 
    width: 20%;
    height: 10px;
-   background: #000;
+   background-color: #000;
    outline: none;
    border: 2px solid cornflowerblue;
    border-radius: 4px;
@@ -39,7 +39,7 @@ label {
    appearance: none;
    width: 25px;
    height: 20px;
-   background: rgb(169, 169, 243);
+   background-color: rgb(169, 169, 243);
    cursor: pointer;
    border: 5px solid cornflowerblue;
    border-radius: 4px;
@@ -49,7 +49,7 @@ label {
  .slider::-moz-range-thumb {
    width: 20px;
    height: 60px;
-   background: #000;
+   background-color: #000;
    cursor: pointer;
    border: 5px solid #44f;
    border-radius: 4px;
