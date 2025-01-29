@@ -49,9 +49,9 @@ label {
  .slider::-moz-range-thumb {
    width: 20px;
    height: 60px;
-   background-color: #000;
+   background-color: rgb(169, 169, 243);
    cursor: pointer;
-   border: 5px solid #44f;
+   border: 5px solid cornflowerblue;
    border-radius: 4px;
  }
 
